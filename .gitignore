@@ -1,0 +1,4 @@
+/config/database.yml
+/tmp/*
+/test/fixtures
+/log/*
