@@ -50,7 +50,7 @@ Rails::Initializer.run do |config|
   # Make sure the secret is at least 30 characters and all random, 
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
-    :session_key => '_drive_by_session',
+    :session_key => '_sneaq_session',
     :secret      => 'd8a0cdd4445743c862880b960f61e4279f17eff5c673f86b26c163b520eb1337bc8fd9c178d2663999332b9535af488f2ffd43be109fc05a4a2dddf7c0e9161e'
   }
 
