@@ -16,6 +16,10 @@ module Api
       Post.find(post_id).update_attributes(:title => struct['title'], :body => struct['description'])
       true
     end
+    
+    def getRecentPosts(blog_id, username, password, limit)
+      Post.find(:all, :limit => limit, :order => 'created_at DESC').map {|post| Api::Struct::Post.from_active_record(post) }
+    end
   
   end
 end

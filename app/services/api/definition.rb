@@ -29,6 +29,15 @@ module Api
         {:publish  => [:int]}
       ],
       :returns => [:bool]
+      
+    api_method :getRecentPosts,
+      :expects => [
+        {:blogid        => :string},
+        {:username      => :string},
+        {:password      => :string},
+        {:numberOfPosts => :int}
+      ],
+      :returns => [[Api::Struct::Post]]
 
   end
 end
