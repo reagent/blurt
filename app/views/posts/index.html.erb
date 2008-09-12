@@ -1,4 +1,10 @@
 <% @posts.each do |post| %>
-<h3><%= h(post.title) %></h3>
-<div><%= post.body %></div>
+<div class="post">
+  <h1><%= h(post.title) %></h1>
+  <div class="body"><%= post.body %></div>
+  <div class="footer">
+    <div class="tags">&nbsp;</div>
+    <div class="posted"><%= post.created_at.to_s(:post)%></div>
+  </div>
+</div>
 <% end %>
