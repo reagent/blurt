@@ -25,7 +25,7 @@ module Api
     
     def getRecentPosts(blog_id, username, password, limit)
       Authenticator.with_authentication(username, password) do
-        Post.find(:all, :limit => limit, :order => 'created_at DESC').map {|post| Api::Struct::Post.from_active_record(post) }
+        Post.by_date.with_limit(limit).map {|post| Api::Struct::Post.from_active_record(post) }
       end
     end
   
