@@ -4,4 +4,7 @@ class Post < ActiveRecord::Base
   
   named_scope :by_date, :order => 'created_at DESC'
   
+  def content
+    Formatter::Code.new(self.body)
+  end
 end

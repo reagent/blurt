@@ -16,7 +16,7 @@ class Api::Struct::PostTest < ActiveSupport::TestCase
       end
       
       should "have a :description" do
-        assert_equal @post.body, @post_struct['description']
+        assert_equal @post.content.to_s, @post_struct['description']
       end
       
       should "have a :link" do

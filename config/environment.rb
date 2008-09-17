@@ -27,6 +27,8 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
   
   config.gem 'datanoise-actionwebservice', :lib => 'actionwebservice', :source => 'http://gems.github.com'
+  config.gem 'hpricot'
+  config.gem 'coderay'
 
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.

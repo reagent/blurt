@@ -12,7 +12,7 @@ module Api
           :postid      => post.id.to_s,
           :title       => post.title,
           :link        => '',
-          :description => post.body
+          :description => post.content.to_s
         )
       end
     end

@@ -1,7 +1,7 @@
 <% @posts.each do |post| %>
 <div class="post">
   <h1><%= h(post.title) %></h1>
-  <div class="body"><%= post.body %></div>
+  <div class="body"><%= post.content.to_html %></div>
   <div class="footer">
     <div class="tags">&nbsp;</div>
     <div class="posted"><%= post.created_at.to_s(:post)%></div>
