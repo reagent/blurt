@@ -27,6 +27,10 @@ class Api::Struct::PostTest < ActiveSupport::TestCase
         assert_equal @post.id.to_s, @post_struct['postid']
       end
       
+      should "have a :dateCreated" do
+        assert_equal @post.created_at, @post_struct['dateCreated']
+      end
+      
     end
     
   end
