@@ -4,6 +4,9 @@ class PostTest < ActiveSupport::TestCase
 
   should_require_attributes :title, :body
   
+  should_have_many :taggings
+  should_have_many :tags
+  
   context "An instance of the Post class" do
     
     should "have formattable content" do
