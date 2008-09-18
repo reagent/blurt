@@ -114,7 +114,8 @@ class Api::ServiceTest < ActiveSupport::TestCase
         end
 
         should "update the existing post" do
-          Post.any_instance.expects(:update_attributes).with(:title => @attributes[:title], :body => @attributes[:description])
+          update_attributes = {:title => @attributes[:title], :body => @attributes[:description]}
+          Post.any_instance.expects(:update_attributes).with(update_attributes)
           @edit_post_method.call(@post)
         end
       end
@@ -200,6 +201,36 @@ class Api::ServiceTest < ActiveSupport::TestCase
           assert_nil @get_recent_posts_method.call(1)
         end
 
+      end
+      
+    end
+    
+    context "when retrieving the category list" do
+      
+      context "as an authenticated user" do
+        
+        setup do
+          Authenticator.stubs(:authenticated?).with(@username, @password).returns(true)
+          @get_categories_method = lambda { @service.getCategories(0, @username, @password) }
+        end
+        
+        should "return an array of categories" do
+          assert_kind_of Array, @get_categories_method.call
+        end
+        
+        should "have the proper category in the list" do
+          tag = Factory(:tag)
+          assert_equal tag.name, @get_categories_method.call.first['description']
+        end
+        
+        should "sort the list by name when there are multiple categories" do
+          Factory(:tag, :name => 'b')
+          Factory(:tag, :name => 'a')
+          
+          assert_equal %w(a b), @get_categories_method.call.map {|category| category['description']}
+          
+        end
+        
       end
       
     end

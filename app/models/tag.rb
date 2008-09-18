@@ -4,4 +4,5 @@ class Tag < ActiveRecord::Base
   
   has_many :taggings
   
+  named_scope :by_name, :order => 'tags.name ASC'
 end

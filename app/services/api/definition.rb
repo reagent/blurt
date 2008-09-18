@@ -39,5 +39,13 @@ module Api
       ],
       :returns => [[Api::Struct::Post]]
 
+    api_method :getCategories,
+      :expects => [
+        {:blogid   => :string},
+        {:username => :string},
+        {:password => :string}
+      ],
+      :returns => [[Api::Struct::Tag]]
+
   end
 end

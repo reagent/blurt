@@ -28,6 +28,10 @@ module Api
         Post.by_date.with_limit(limit).map {|post| Api::Struct::Post.from_active_record(post) }
       end
     end
+    
+    def getCategories(blog_id, username, password)
+      Tag.by_name.map {|tag| Api::Struct::Tag.from_active_record(tag)}
+    end
   
   end
 end
