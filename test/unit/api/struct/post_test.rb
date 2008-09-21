@@ -7,7 +7,7 @@ class Api::Struct::PostTest < ActiveSupport::TestCase
     context "when instantiating itself from an ActiveRecord instance" do
       
       setup do
-        @post         = Factory(:post)
+        @post         = Factory(:post, :tag_names => ['tag'])
         @post_struct  = Api::Struct::Post.from_active_record(@post)
       end
     
@@ -29,6 +29,10 @@ class Api::Struct::PostTest < ActiveSupport::TestCase
       
       should "have a :dateCreated" do
         assert_equal @post.created_at, @post_struct['dateCreated']
+      end
+      
+      should "have a list of :categories" do
+        assert_equal @post.tag_names, @post_struct['categories']
       end
       
     end

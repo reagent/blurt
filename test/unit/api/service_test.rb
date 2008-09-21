@@ -7,7 +7,7 @@ class Api::ServiceTest < ActiveSupport::TestCase
     setup do
       @username = 'reagent'
       @password = 'fluffybunnies'
-      @attributes = {:title => 'Title', :description => 'Description'}
+      @attributes = {:title => 'Title', :description => 'Description', :categories => ['category']}
 
       @service = Api::Service.new
       @post_struct = Api::Struct::Post.new(@attributes)
@@ -41,6 +41,10 @@ class Api::ServiceTest < ActiveSupport::TestCase
 
         should "assign the proper :body to the new post" do
           assert_equal @attributes[:description], @new_post.body
+        end
+        
+        should "assign the proper tags to the new post" do
+          assert_equal @attributes[:categories], @new_post.tag_names
         end
       end
 
@@ -114,7 +118,11 @@ class Api::ServiceTest < ActiveSupport::TestCase
         end
 
         should "update the existing post" do
-          update_attributes = {:title => @attributes[:title], :body => @attributes[:description]}
+          update_attributes = {
+            :title     => @attributes[:title], 
+            :body      => @attributes[:description],
+            :tag_names => @attributes[:categories]
+          }
           Post.any_instance.expects(:update_attributes).with(update_attributes)
           @edit_post_method.call(@post)
         end

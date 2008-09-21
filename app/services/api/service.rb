@@ -5,7 +5,11 @@ module Api
       
     def newPost(blogid, username, password, struct, publish)
       Authenticator.with_authentication(username, password) do
-        post = ::Post.create(:title => struct['title'], :body => struct['description'])
+        post = ::Post.create(
+          :title     => struct['title'], 
+          :body      => struct['description'], 
+          :tag_names => struct['categories']
+        )
         post.id.to_s
       end
     end
@@ -18,7 +22,11 @@ module Api
     
     def editPost(post_id, username, password, struct, publish)
       Authenticator.with_authentication(username, password) do
-        Post.find(post_id).update_attributes(:title => struct['title'], :body => struct['description'])
+        Post.find(post_id).update_attributes(
+          :title     => struct['title'], 
+          :body      => struct['description'],
+          :tag_names => struct['categories']
+        )
         true
       end
     end

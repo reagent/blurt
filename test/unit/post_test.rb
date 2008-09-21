@@ -9,14 +9,79 @@ class PostTest < ActiveSupport::TestCase
   
   context "An instance of the Post class" do
     
+    setup { @post = Post.new }
+    
     should "have formattable content" do
       body = 'test'
       formatter = stub()
       
-      post = Post.new(:body => body)
+      @post.body = body
       Formatter::Code.stubs(:new).with(body).returns(formatter)
       
-      assert_equal formatter, post.content
+      assert_equal formatter, @post.content
+    end
+
+    should "have a list of assigned tag names" do
+      tag_names = ['tag']
+      @post.tag_names = tag_names
+      assert_equal tag_names, @post.tag_names
+    end
+    
+    should "default the list of tag names to an empty array" do
+      assert_equal [], @post.tag_names
+    end
+
+    should "filter out duplicate tag names" do
+      @post.tag_names = ['tag', 'tag']
+      assert_equal ['tag'], @post.tag_names
+    end
+    
+    should "pull the list of associated tags when available" do
+      tag = Factory(:tag)
+      @post.tags << tag
+      
+      assert_equal [tag.name], @post.tag_names
+    end
+    
+    context "with a list of assigned tag names" do
+      
+      should "be able to create the associated tags" do
+        @post = Factory(:post)
+        
+        tag_name = 'tag'
+        @post.tag_names = [tag_name]
+
+        @post.send(:save_tags)        
+        assert_equal tag_name, @post.tags.first.name
+      end
+      
+      should "reuse an existing tag when saving tags" do
+        existing_tag = Factory(:tag)
+        post = Factory(:post)
+        
+        post.tag_names = [existing_tag.name]
+        post.send(:save_tags)
+        
+        assert_equal existing_tag, post.tags.first
+      end
+      
+      should "save only the new tags" do
+        post = Factory(:post)
+        tag  = Factory(:tag, :name => 'original')
+        post.tags << tag
+        
+        post.tag_names = ['new']
+        post.send(:save_tags)
+        
+        assert_equal ['new'], post.tags.map(&:name)
+      end
+      
+      should "save tags after saving the base record" do
+        post = Factory(:post)
+        post.expects(:save_tags).with()
+        post.save
+      end
+      
     end
     
   end

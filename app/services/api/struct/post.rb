@@ -4,6 +4,7 @@ module Api
     class Post < ActionWebService::Struct
       member :postid,       :string
       member :title,        :string
+      member :categories,   [:string]
       member :link,         :string
       member :description,  :string
       member :dateCreated,  :time
@@ -12,6 +13,7 @@ module Api
         self.new(
           :postid      => post.id.to_s,
           :title       => post.title,
+          :categories  => post.tag_names,
           :link        => '',
           :description => post.content.to_s,
           :dateCreated => post.created_at
