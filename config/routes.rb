@@ -1,6 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
 
-  map.formatted_posts 'posts.:format', :controller => 'posts', :action => 'index'
+  map.feed 'feed', :controller => 'posts', :action => 'index', :format => :rss
 
   map.root :controller => 'posts'
 

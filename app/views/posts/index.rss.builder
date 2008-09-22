@@ -3,7 +3,7 @@ xml.rss :version => "2.0" do
   xml.channel do
     xml.title 'sneaq.'
     xml.description 'Stomping on a human face for 30 seconds at a time'
-    xml.link formatted_posts_url(:rss)
+    xml.link feed_url
     
     @posts.each do |post|
       xml.item do
