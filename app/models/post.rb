@@ -3,7 +3,11 @@ class Post < ActiveRecord::Base
   validates_presence_of :title, :body
   
   has_many :taggings
-  has_many :tags, :through => :taggings
+  has_many :tags, :through => :taggings do
+    def to_s
+      self.map(&:name).join(', ')
+    end
+  end
   
   named_scope :by_date, :order => 'created_at DESC'
   named_scope :with_limit, lambda {|limit| {:limit => limit} }

@@ -43,6 +43,17 @@ class PostTest < ActiveSupport::TestCase
       assert_equal [tag.name], @post.tag_names
     end
     
+    should "be able to produce a string representation of its tag list" do
+      tag_one = Factory(:tag, :name => 'one')
+      tag_two = Factory(:tag, :name => 'two')
+      
+      post = Factory(:post)
+      post.tags << tag_one
+      post.tags << tag_two
+      
+      assert_equal 'one, two', post.tags.to_s
+    end
+    
     context "with a list of assigned tag names" do
       
       should "be able to create the associated tags" do
