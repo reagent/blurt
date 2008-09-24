@@ -54,6 +54,27 @@ class PostTest < ActiveSupport::TestCase
       assert_equal 'one, two', post.tags.to_s
     end
     
+    should "be able to generate a slug for the post title" do
+      @post.title = "This is the   name of the post"
+      @post.send(:generate_slug)
+      
+      assert_equal 'this-is-the-name-of-the-post', @post.slug
+    end
+    
+    should "filter out special characters from the title before generating the slug"
+    
+    should "not generate a slug for the title if the title is nil" do
+      @post.title = nil
+      @post.send(:generate_slug)
+      
+      assert_nil @post.slug
+    end
+    
+    should "generate a slug before the post is validated" do
+      @post.expects(:generate_slug)
+      @post.valid?
+    end
+    
     context "with a list of assigned tag names" do
       
       should "be able to create the associated tags" do

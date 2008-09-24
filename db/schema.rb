@@ -9,20 +9,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080918031328) do
+ActiveRecord::Schema.define(:version => 20080924051713) do
 
   create_table "posts", :force => true do |t|
     t.string   "title",      :null => false
     t.text     "body",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "slug",       :null => false
   end
 
+  add_index "posts", ["slug"], :name => "index_posts_on_slug", :unique => true
+
   create_table "taggings", :force => true do |t|
-    t.integer  "post_id",    :limit => 11, :null => false
-    t.integer  "tag_id",     :limit => 11, :null => false
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
+    t.integer  "post_id",    :null => false
+    t.integer  "tag_id",     :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "taggings", ["post_id", "tag_id"], :name => "index_taggings_on_post_id_and_tag_id", :unique => true

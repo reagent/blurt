@@ -14,6 +14,7 @@ class Post < ActiveRecord::Base
   
   attr_accessor :tag_names
   
+  before_validation :generate_slug
   after_save :save_tags
   
   def tag_names
@@ -34,4 +35,9 @@ class Post < ActiveRecord::Base
       self.tags << tag
     end
   end
+  
+  def generate_slug
+    self.slug = self.title.downcase.gsub(/\s+/, '-') unless self.title.nil?
+  end
+  
 end
