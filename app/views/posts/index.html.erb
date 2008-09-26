@@ -1,10 +1,3 @@
 <% @posts.each do |post| %>
-<div class="post">
-  <h1><%= h(post.title) %></h1>
-  <div class="body"><%= post.content.to_html %></div>
-  <div class="footer">
-    <div class="tags"><%= "Tags:&nbsp;#{post.tags}" unless post.tag_names.empty? %></div>
-    <div class="posted"><%= post.created_at.to_s(:post)%></div>
-  </div>
-</div>
+  <%= render :partial => 'post', :locals => {:post => post} %>
 <% end %>

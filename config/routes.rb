@@ -7,4 +7,5 @@ ActionController::Routing::Routes.draw do |map|
   # MetaWeblog API-enabled admin section
   map.admin 'admin', :controller => 'api', :action => 'api'
 
+  map.permalink ':id', :controller => 'posts', :action => 'show'
 end

@@ -23,5 +23,28 @@ class PostsControllerTest < ActionController::TestCase
     end
 
   end
+  
+  context "A GET to :show" do
+    
+    context "with a valid Post slug" do
+      setup do
+        @post = Factory(:post)
+        get :show, :id => @post.slug
+      end
+    
+      should "assign to @post" do
+        assert_equal @post, assigns(:post)
+      end
+      
+      should_render_template :show
+  
+    end
+    
+    context "without a valid Post slug" do
+      setup { get :show, :id => 'missing' }
+      should_redirect_to 'root_path'
+    end
+    
+  end
 
 end
