@@ -17,11 +17,14 @@ class Post < ActiveRecord::Base
   before_validation :generate_slug
   after_save :save_tags
   
+  
   def tag_names
     @tag_names ||= self.tags.map(&:name)
     @tag_names.uniq!
     @tag_names
   end
+
+  def to_param; self.slug; end
   
   def content
     Formatter::Code.new(self.body)
@@ -37,7 +40,21 @@ class Post < ActiveRecord::Base
   end
   
   def generate_slug
-    self.slug = self.title.downcase.gsub(/\s+/, '-') unless self.title.nil?
+    unless self.title.nil?
+      base_slug = self.title.downcase
+      base_slug.gsub!(/[^0-9a-z_ -]/, '')
+      base_slug.gsub!(/\s+/, '-')
+      
+      attempted_slug = base_slug
+      
+      index = 2
+      while Post.find_by_slug(attempted_slug)
+        attempted_slug = base_slug + "-#{index}"
+        index+= 1
+      end
+      
+      self.slug = attempted_slug
+    end
   end
   
 end

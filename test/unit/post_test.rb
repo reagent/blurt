@@ -20,7 +20,7 @@ class PostTest < ActiveSupport::TestCase
       
       assert_equal formatter, @post.content
     end
-
+    
     should "have a list of assigned tag names" do
       tag_names = ['tag']
       @post.tag_names = tag_names
@@ -61,7 +61,12 @@ class PostTest < ActiveSupport::TestCase
       assert_equal 'this-is-the-name-of-the-post', @post.slug
     end
     
-    should "filter out special characters from the title before generating the slug"
+    should "filter out special characters from the title before generating the slug" do
+      @post.title = 'this!is~a   post?'
+      @post.send(:generate_slug)
+      
+      assert_equal 'thisisa-post', @post.slug
+    end
     
     should "not generate a slug for the title if the title is nil" do
       @post.title = nil
@@ -70,9 +75,32 @@ class PostTest < ActiveSupport::TestCase
       assert_nil @post.slug
     end
     
+    should "generate a slug with a suffix when the original is taken" do
+      Factory(:post, :title => 'Title')
+      @post.title = 'Title'
+      @post.send(:generate_slug)
+      
+      assert_equal 'title-2', @post.slug
+    end
+    
+    should "generate slugs in increments until it finds an available slug" do
+      Factory(:post, :title => 'Title')
+      Factory(:post, :title => 'Title')
+      
+      @post.title = "Title"
+      @post.send(:generate_slug)
+      
+      assert_equal 'title-3', @post.slug
+    end
+
     should "generate a slug before the post is validated" do
       @post.expects(:generate_slug)
       @post.valid?
+    end
+    
+    should "expose the slug as the URL parameter" do
+      @post.stubs(:slug).returns('foo')
+      assert_equal 'foo', @post.to_param
     end
     
     context "with a list of assigned tag names" do
