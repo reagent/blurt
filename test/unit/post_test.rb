@@ -7,6 +7,20 @@ class PostTest < ActiveSupport::TestCase
   should_have_many :taggings
   should_have_many :tags
   
+  context "The Post class" do
+    
+    should "find other instances by their slugs" do
+      post = Factory(:post)
+      assert_equal post, Post.others_by_slug(nil, post.slug)
+    end
+    
+    should "not find themselves if looking for others by slug" do
+      post = Factory(:post)
+      assert_nil Post.others_by_slug(post.id, post.slug)
+    end
+    
+  end
+  
   context "An instance of the Post class" do
     
     setup { @post = Post.new }
@@ -54,45 +68,48 @@ class PostTest < ActiveSupport::TestCase
       assert_equal 'one, two', post.tags.to_s
     end
     
-    should "be able to generate a slug for the post title" do
-      @post.title = "This is the   name of the post"
-      @post.send(:generate_slug)
-      
-      assert_equal 'this-is-the-name-of-the-post', @post.slug
+    should "be able to create a slug from the post's title" do
+      assert_equal 'this-is-the-name-of-the-post', @post.send(:sluggify, "This is the   name of the post")
     end
     
-    should "filter out special characters from the title before generating the slug" do
-      @post.title = 'this!is~a   post?'
-      @post.send(:generate_slug)
-      
-      assert_equal 'thisisa-post', @post.slug
+    should "filter out special characters from the title before creating the slug" do
+      assert_equal 'thisisa-post', @post.send(:sluggify, 'this!is~a   post?')
     end
     
-    should "not generate a slug for the title if the title is nil" do
-      @post.title = nil
-      @post.send(:generate_slug)
-      
-      assert_nil @post.slug
+    should "not have a slug set to nil if the title is nil" do
+      assert_nil @post.send(:sluggify, nil)
     end
     
-    should "generate a slug with a suffix when the original is taken" do
+    should "know the next available slug when the original is taken" do
       Factory(:post, :title => 'Title')
-      @post.title = 'Title'
-      @post.send(:generate_slug)
-      
-      assert_equal 'title-2', @post.slug
+      assert_equal 'title-2', @post.send(:next_available_slug, 'title')
     end
     
-    should "generate slugs in increments until it finds an available slug" do
+    should "incrementally suggest slugs until it finds an available one" do
       Factory(:post, :title => 'Title')
       Factory(:post, :title => 'Title')
       
-      @post.title = "Title"
-      @post.send(:generate_slug)
-      
-      assert_equal 'title-3', @post.slug
+      assert_equal 'title-3', @post.send(:next_available_slug, 'title')
     end
-
+    
+    should "know not to suggest an incremental slug when the existing slug belongs to the current record" do
+      post = Factory(:post, :title => 'Title')
+      assert_equal 'title', post.send(:next_available_slug, 'title')
+    end
+    
+    should "not attempt to find the next slug if the initial slug is nil" do
+      assert_nil @post.send(:next_available_slug, nil)
+    end
+    
+    should "know how to generate a slug" do
+      @post.title = 'My Title'
+      @post.expects(:sluggify).with(@post.title).returns('my-title')
+      @post.expects(:next_available_slug).with('my-title').returns('my-title')
+      
+      @post.send(:generate_slug)
+      assert_equal 'my-title', @post.slug
+    end
+    
     should "generate a slug before the post is validated" do
       @post.expects(:generate_slug)
       @post.valid?

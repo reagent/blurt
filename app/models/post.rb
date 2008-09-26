@@ -17,6 +17,10 @@ class Post < ActiveRecord::Base
   before_validation :generate_slug
   after_save :save_tags
   
+  def self.others_by_slug(id, slug)
+    conditions = id.nil? ? {} : {:conditions => ['id != ?', id]}
+    find_by_slug(slug, conditions)
+  end
   
   def tag_names
     @tag_names ||= self.tags.map(&:name)
@@ -43,22 +47,29 @@ class Post < ActiveRecord::Base
     end
   end
   
-  def generate_slug
-    unless self.title.nil?
-      base_slug = self.title.downcase
-      base_slug.gsub!(/[^0-9a-z_ -]/, '')
-      base_slug.gsub!(/\s+/, '-')
-      
-      attempted_slug = base_slug
-      
-      index = 2
-      while Post.find_by_slug(attempted_slug)
-        attempted_slug = base_slug + "-#{index}"
-        index+= 1
-      end
-      
-      self.slug = attempted_slug
+  def sluggify(title)
+    slug = nil
+    unless title.nil?
+      slug = title.downcase
+      slug.gsub!(/[^0-9a-z_ -]/, '')
+      slug.gsub!(/\s+/, '-')
     end
+    slug
+  end
+  
+  def next_available_slug(base_slug)
+    valid_slug = base_slug
+    
+    index = 2
+    while Post.others_by_slug(self.id, valid_slug)
+      valid_slug = base_slug + "-#{index}"
+      index+= 1
+    end
+    valid_slug
+  end
+  
+  def generate_slug
+    self.slug = next_available_slug(sluggify(self.title))
   end
   
 end
