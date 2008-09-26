@@ -103,6 +103,15 @@ class PostTest < ActiveSupport::TestCase
       assert_equal 'foo', @post.to_param
     end
     
+    should "be able to generate its own permalink" do
+      base_url = 'http://localhost/'
+      Configuration.stubs(:application).returns(stub(:base_url => base_url))
+      
+      @post.stubs(:slug).returns('post-title')
+      
+      assert_equal "#{base_url}post-title", @post.permalink
+    end
+    
     context "with a list of assigned tag names" do
       
       should "be able to create the associated tags" do

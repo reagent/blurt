@@ -30,6 +30,10 @@ class Post < ActiveRecord::Base
     Formatter::Code.new(self.body)
   end
   
+  def permalink
+    "#{Configuration.application.base_url}#{self.slug}"
+  end
+  
   private
   def save_tags
     self.tags.clear

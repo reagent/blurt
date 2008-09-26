@@ -5,7 +5,7 @@ module Api
       member :postid,       :string
       member :title,        :string
       member :categories,   [:string]
-      member :link,         :string
+      member :permaLink,    :string
       member :description,  :string
       member :dateCreated,  :time
     
@@ -14,7 +14,7 @@ module Api
           :postid      => post.id.to_s,
           :title       => post.title,
           :categories  => post.tag_names,
-          :link        => '',
+          :permaLink   => post.permalink,
           :description => post.content.to_s,
           :dateCreated => post.created_at
         )

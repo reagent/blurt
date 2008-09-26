@@ -1,5 +1,5 @@
 <div class="post">
-  <h1><%= link_to h(post.title), permalink_path(post) %></h1>
+  <h1><%= link_to h(post.title), post.permalink %></h1>
   <div class="body"><%= post.content.to_html %></div>
   <div class="footer">
     <div class="tags"><%= "Tags:&nbsp;#{post.tags}" unless post.tag_names.empty? %></div>

@@ -7,7 +7,10 @@ class Api::Struct::PostTest < ActiveSupport::TestCase
     context "when instantiating itself from an ActiveRecord instance" do
       
       setup do
-        @post         = Factory(:post, :tag_names => ['tag'])
+        @permalink = 'http://localhost/post-slug'
+        @post = Factory(:post, :tag_names => ['tag'])
+        
+        @post.stubs(:permalink).returns(@permalink)
         @post_struct  = Api::Struct::Post.from_active_record(@post)
       end
     
@@ -19,8 +22,8 @@ class Api::Struct::PostTest < ActiveSupport::TestCase
         assert_equal @post.content.to_s, @post_struct['description']
       end
       
-      should "have a :link" do
-        assert_equal '', @post_struct['link']
+      should "have a :permaLink" do
+        assert_equal @permalink, @post_struct['permaLink']
       end
       
       should "have a :postid" do
