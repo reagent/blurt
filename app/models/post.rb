@@ -40,11 +40,7 @@ class Post < ActiveRecord::Base
   
   private
   def save_tags
-    self.tags.clear
-    tag_names.each do |tag_name|
-      tag = Tag.find_or_create_by_name(tag_name)
-      self.tags << tag
-    end
+    self.tags = self.tag_names.map {|tag_name| Tag.find_or_create_by_name(tag_name) }
   end
   
   def sluggify(title)

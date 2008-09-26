@@ -170,6 +170,23 @@ class PostTest < ActiveSupport::TestCase
       
     end
     
+    context "with associated tags" do
+      
+      setup do
+        @post = Factory(:post) 
+        @tag = Factory(:tag)
+        @post.tags << @tag
+        
+        @post = Post.find(@post.id)
+      end
+      
+      should "not clear out the tag list when saving" do
+        @post.save
+        assert_equal [@tag], @post.tags
+      end
+      
+    end
+    
   end
   
 end
