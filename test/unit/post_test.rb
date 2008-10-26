@@ -68,18 +68,6 @@ class PostTest < ActiveSupport::TestCase
       assert_equal 'one, two', post.tags.to_s
     end
     
-    should "be able to create a slug from the post's title" do
-      assert_equal 'this-is-the-name-of-the-post', @post.send(:sluggify, "This is the   name of the post")
-    end
-    
-    should "filter out special characters from the title before creating the slug" do
-      assert_equal 'thisisa-post', @post.send(:sluggify, 'this!is~a   post?')
-    end
-    
-    should "not have a slug set to nil if the title is nil" do
-      assert_nil @post.send(:sluggify, nil)
-    end
-    
     should "know the next available slug when the original is taken" do
       Factory(:post, :title => 'Title')
       assert_equal 'title-2', @post.send(:next_available_slug, 'title')
@@ -103,7 +91,7 @@ class PostTest < ActiveSupport::TestCase
     
     should "know how to generate a slug" do
       @post.title = 'My Title'
-      @post.expects(:sluggify).with(@post.title).returns('my-title')
+      @post.title.expects(:sluggify).with().returns('my-title')
       @post.expects(:next_available_slug).with('my-title').returns('my-title')
       
       @post.send(:generate_slug)

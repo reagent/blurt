@@ -43,12 +43,6 @@ class Post < ActiveRecord::Base
     self.tags = self.tag_names.map {|tag_name| Tag.find_or_create_by_name(tag_name) }
   end
   
-  def sluggify(title)
-    slug = nil
-    slug = title.sluggify unless title.nil?
-    slug
-  end
-  
   def next_available_slug(base_slug)
     valid_slug = base_slug
     
@@ -61,7 +55,7 @@ class Post < ActiveRecord::Base
   end
   
   def generate_slug
-    self.slug = next_available_slug(sluggify(self.title))
+    self.slug = next_available_slug(self.title.sluggify)
   end
   
 end
