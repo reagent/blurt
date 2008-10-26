@@ -1,4 +1,7 @@
 ENV["RAILS_ENV"] = "test"
+
+$:.reject! { |e| e.include? 'TextMate' }
+
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test_help'
 
