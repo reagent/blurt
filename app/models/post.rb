@@ -45,11 +45,7 @@ class Post < ActiveRecord::Base
   
   def sluggify(title)
     slug = nil
-    unless title.nil?
-      slug = title.downcase
-      slug.gsub!(/[^0-9a-z_ -]/, '')
-      slug.gsub!(/\s+/, '-')
-    end
+    slug = title.sluggify unless title.nil?
     slug
   end
   
