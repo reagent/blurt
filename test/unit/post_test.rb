@@ -7,20 +7,6 @@ class PostTest < ActiveSupport::TestCase
   should_have_many :taggings
   should_have_many :tags
   
-  context "The Post class" do
-    
-    should "find other instances by their slugs" do
-      post = Factory(:post)
-      assert_equal post, Post.others_by_slug(nil, post.slug)
-    end
-    
-    should "not find themselves if looking for others by slug" do
-      post = Factory(:post)
-      assert_nil Post.others_by_slug(post.id, post.slug)
-    end
-    
-  end
-  
   context "An instance of the Post class" do
     
     setup { @post = Post.new }
@@ -66,36 +52,6 @@ class PostTest < ActiveSupport::TestCase
       post.tags << tag_two
       
       assert_equal 'one, two', post.tags.to_s
-    end
-    
-    should "know the next available slug when the original is taken" do
-      Factory(:post, :title => 'Title')
-      assert_equal 'title-2', @post.send(:next_available_slug, 'title')
-    end
-    
-    should "incrementally suggest slugs until it finds an available one" do
-      Factory(:post, :title => 'Title')
-      Factory(:post, :title => 'Title')
-      
-      assert_equal 'title-3', @post.send(:next_available_slug, 'title')
-    end
-    
-    should "know not to suggest an incremental slug when the existing slug belongs to the current record" do
-      post = Factory(:post, :title => 'Title')
-      assert_equal 'title', post.send(:next_available_slug, 'title')
-    end
-    
-    should "not attempt to find the next slug if the initial slug is nil" do
-      assert_nil @post.send(:next_available_slug, nil)
-    end
-    
-    should "know how to generate a slug" do
-      @post.title = 'My Title'
-      @post.title.expects(:sluggify).with().returns('my-title')
-      @post.expects(:next_available_slug).with('my-title').returns('my-title')
-      
-      @post.send(:generate_slug)
-      assert_equal 'my-title', @post.slug
     end
     
     should "generate a slug before the post is validated" do
