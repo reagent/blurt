@@ -1,4 +1,4 @@
-== sneaq.
+== blurt.
 
 I'm horrible about blogging - it's true.  I'd much rather just dump some nicely formatted stuff out in the ether so that I (and others) can find useful information later.  Sometimes this is code, sometimes it's other random useful links and snippets - the point is that it's *small*.  This micro/tumble/crap-blog is my attempt to create something that I can actually use on a daily basis.
 
@@ -10,7 +10,7 @@ This is designed to be ultra light-weight.  That means:
   * No web-based admin interface (MetaWeblog API instead)
   * Single account / profile
   * Single blog
-  * No theme support **
+  * Lightweight theme support
   * Specific set of content items (e.g. code / video / image)
   * Possibly trackback support
 
@@ -26,8 +26,28 @@ If you're using TextMate, this means:
 
   * Bundles -> Blogging -> Setup Blogs
   * Add a line to the config: my_blog http://yourdomain.com/admin
-  * Open a new document and select Blog - HTML
+  * Open a new document and select Blog - Markdown
   * Add a title and some content, then Bundles -> Blogging -> Post to Blog
+
+== Formatting
+
+The default post formatting is Markdown with additional filters as necessary.  Embedding code is supported through the use of <code> tags:
+  
+    <code lang="ruby">
+      class PostsController < ApplicationController
+        def index
+          @posts = Post.by_date
+        end
+      end
+    </code>
+
+The formatter uses CodeRay (http://coderay.rubychan.de/) internally so any of the supported programming languages are allowed.
+
+== TODO
+
+* Allow drag & drop of media with MetaWeblog API
+* Auto-recognition of content (e.g. video / mp3) and generation of embed codes
+* Plugins
 
 == Author
 
