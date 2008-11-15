@@ -2,7 +2,9 @@
   <h1><%= link_to h(post.title), post.permalink %></h1>
   <div class="body"><%= post.content.to_html %></div>
   <div class="footer">
-    <div class="tags"><%= "Tags:&nbsp;#{post.tags}" unless post.tag_names.empty? %></div>
+    <div class="tags">
+      Tags: <%= tag_links_for post %>
+    </div>
     <div class="posted">Posted: <%= post.created_at.to_s(:post)%></div>
   </div>
 </div>

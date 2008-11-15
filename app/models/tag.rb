@@ -9,6 +9,7 @@ class Tag < ActiveRecord::Base
   validates_uniqueness_of :slug
   
   has_many :taggings
+  has_many :posts, :through => :taggings
   
   before_validation :generate_slug
   

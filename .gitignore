@@ -3,4 +3,5 @@
 /tmp/*
 /test/fixtures/*.yml
 /log/*
-/public
+/public/*
+/app/views/*
