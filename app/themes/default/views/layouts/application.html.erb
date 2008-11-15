@@ -3,22 +3,23 @@
 
 <html>
 <head>
-  <title>sneaq.</title>
+  <title>blurt.</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <%= stylesheet_link_tag 'global' %>
-  <%= stylesheet_link_tag 'coderay' %>
+  <%= stylesheet_link_tag 'blurt' %>
   <%= auto_discovery_link_tag :rss, feed_url %>
 </head>
 <body>
-  <div id="main" class="clearfix">
+  <div id="main">
     <div id="header">
-      <div id="header-main">
-        <%= link_to image_tag('sneaq-logo.jpg'), root_path %>
-      </div>
+      blurt. rhymes with dirt.
     </div>
     <div id="content">
       <%= yield %>
     </div>
+    <div id="footer">
+      powered by <a href="http://github.com/reagent/blurt">blurt</a>.
+    </div>
   </div>
+
 </body>
 </html>

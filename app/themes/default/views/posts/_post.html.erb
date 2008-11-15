@@ -3,6 +3,6 @@
   <div class="body"><%= post.content.to_html %></div>
   <div class="footer">
     <div class="tags"><%= "Tags:&nbsp;#{post.tags}" unless post.tag_names.empty? %></div>
-    <div class="posted"><%= post.created_at.to_s(:post)%></div>
+    <div class="posted">Posted: <%= post.created_at.to_s(:post)%></div>
   </div>
 </div>

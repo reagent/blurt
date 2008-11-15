@@ -19,6 +19,11 @@ class ConfigurationTest < ActiveSupport::TestCase
       assert_equal 'http://localhost/', configuration.base_url
     end
     
+    should "have a :theme accessor" do
+      configuration = Configuration::Application.new('host' => 'localhost', 'theme' => 'default')
+      assert_equal 'default', configuration.theme
+    end
+    
   end
   
   context "An instance of the Configuration::Authentication class" do

@@ -1,8 +1,8 @@
 xml.instruct! :xml, :version => "1.0" 
 xml.rss :version => "2.0" do
   xml.channel do
-    xml.title 'sneaq.'
-    xml.description 'Stomping on a human face for 30 seconds at a time'
+    xml.title 'blurt.'
+    xml.description 'Rhymes with dirt.'
     xml.link root_url
     
     @posts.each do |post|
@@ -16,4 +16,3 @@ xml.rss :version => "2.0" do
     end
   end
 end
-

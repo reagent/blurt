@@ -1,0 +1,50 @@
+body {
+	margin:       10px 0px;
+	padding:      0px;
+	text-align:   center;
+  font-family:  Georgia;
+  font-size:    11px;
+}
+
+#main {
+  width:      650px;
+  margin:     0px auto;
+  text-align: justify;
+}
+
+#header {
+  text-align:     center;
+  font-weight:    bold;
+  font-size:      16px;
+  padding:        5px;
+  border-bottom:  1px solid #333;
+  border-top:     1px solid #333;
+}
+
+#footer {
+  border-top: 1px solid #333;
+  margin: 15px 0;
+}
+
+#content .body {
+  font-family: Verdana, Helvetica;
+}
+
+#content .footer {
+  border-top:     1px dotted #333;
+  border-bottom:  1px dotted #333;
+  
+}
+
+h1 {
+  font-size: 14px;
+}
+
+a {
+  color: #06B;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

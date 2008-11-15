@@ -23,6 +23,10 @@ class Configuration
       "http://#{@configuration['host']}#{port_spec}/"
     end
     
+    def theme
+      @configuration['theme']
+    end
+    
   end
   
   class Authentication
