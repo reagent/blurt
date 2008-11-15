@@ -4,4 +4,4 @@ application:
 
 authentication:
   username: username
-  password: fluffybunnies
+  password: password

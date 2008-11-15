@@ -1,5 +1,5 @@
 /config/database.yml
-/config/sneaq.yml
+/config/blurt.yml
 /tmp/*
 /test/fixtures/*.yml
 /log/*
