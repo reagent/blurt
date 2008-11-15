@@ -14,7 +14,7 @@ class Post < ActiveRecord::Base
     end
   end
   
-  named_scope :by_date, :order => 'created_at DESC'
+  named_scope :by_date, :order => 'created_at DESC', :include => :tags
   named_scope :with_limit, lambda {|limit| {:limit => limit} }
   
   attr_accessor :tag_names
