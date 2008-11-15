@@ -1,5 +1,7 @@
 module Api
   class Service < ActionWebService::Base
+
+    class UnauthenticatedError < StandardError; end
   
     web_service_api Api::Definition
     
@@ -37,13 +39,21 @@ module Api
     [:newPost, :getPost, :editPost, :getRecentPosts, :getCategories].each do |method_name|
       class_eval <<-EOM
         def #{method_name}_with_authentication(*params)
-          Authenticator.with_authentication(params[1], params[2]) do
-            #{method_name}_without_authentication(*params)
-          end
+          authenticate!(params[1], params[2])
+          #{method_name}_without_authentication(*params)
         end
       EOM
       
       alias_method_chain method_name, :authentication
     end
+    
+    private
+    def authenticate!(username, password)
+      authenticated   = Configuration.authentication.username == username
+      authenticated &&= Configuration.authentication.password == password
+      
+      raise UnauthenticatedError, "Could not authenticate this user, please check your credentials" unless authenticated
+    end
+    
   end
 end

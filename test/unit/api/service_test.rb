@@ -22,7 +22,7 @@ class Api::ServiceTest < ActiveSupport::TestCase
 
       context "as an authenticated user" do
         setup do
-          Authenticator.stubs(:authenticated?).with(@username, @password).returns(true)
+          @service.stubs(:authenticate!).with(@username, @password).returns(true)
           @response = @new_post_method.call
           @new_post = Post.last
         end
@@ -50,17 +50,18 @@ class Api::ServiceTest < ActiveSupport::TestCase
 
       context "as an unauthenticated user" do
         setup do
-          Authenticator.stubs(:authenticated?).with(@username, @password).returns(false)
-          @response = @new_post_method.call
+          @service.stubs(:authenticate!).with(@username, @password).raises(Api::Service::UnauthenticatedError)
         end
 
         should "not increment the post count" do
+           @new_post_method.call rescue nil
           assert_equal @post_count, Post.count
         end
 
-        should "return nil" do
-          assert_nil @response
+        should "raise an exception" do
+          assert_raise(Api::Service::UnauthenticatedError) { @new_post_method.call }
         end
+
       end
 
     end
@@ -74,7 +75,7 @@ class Api::ServiceTest < ActiveSupport::TestCase
 
       context "as an authenticated user" do
         setup do
-          Authenticator.stubs(:authenticated?).with(@username, @password).returns(true)
+          @service.stubs(:authenticate!).with(@username, @password).returns(true)
           @response = @get_post_method.call(@post)
         end
 
@@ -89,12 +90,11 @@ class Api::ServiceTest < ActiveSupport::TestCase
 
       context "as an unauthenticated user" do
         setup do
-          Authenticator.stubs(:authenticated?).with(@username, @password).returns(false)
-          @response = @get_post_method.call(@post)
+          @service.stubs(:authenticate!).with(@username, @password).raises(Api::Service::UnauthenticatedError)
         end
 
-        should "return nil" do
-          assert_nil @response
+        should "raise an exception" do
+          assert_raise(Api::Service::UnauthenticatedError) { @get_post_method.call(@post) }
         end
 
       end
@@ -110,7 +110,7 @@ class Api::ServiceTest < ActiveSupport::TestCase
 
       context "as an authenticated user" do
         setup do
-          Authenticator.stubs(:authenticated?).with(@username, @password).returns(true)
+          @service.stubs(:authenticate!).with(@username, @password).returns(true)
         end
 
         should "return true" do
@@ -130,16 +130,16 @@ class Api::ServiceTest < ActiveSupport::TestCase
 
       context "as an unauthenticated user" do
         setup do
-          Authenticator.stubs(:authenticated?).with(@username, @password).returns(false)
+          @service.stubs(:authenticate!).with(@username, @password).raises(Api::Service::UnauthenticatedError)
         end
 
-        should "return nil" do
-          assert_nil @edit_post_method.call(@post)
+        should "raise an exception" do
+          assert_raise(Api::Service::UnauthenticatedError) { @edit_post_method.call(@post) }
         end
 
         should "not update any posts" do
           Post.any_instance.expects(:update_attributes).with(kind_of(Hash)).never
-          @edit_post_method.call(@post)
+          @edit_post_method.call(@post) rescue nil
         end
 
       end
@@ -155,7 +155,7 @@ class Api::ServiceTest < ActiveSupport::TestCase
       context "as an authenticated user" do
 
         setup do
-          Authenticator.stubs(:authenticated?).with(@username, @password).returns(true)
+          @service.stubs(:authenticate!).with(@username, @password).returns(true)
           
           @title = 'This is a title'
           @body  = 'This is a body'
@@ -202,11 +202,11 @@ class Api::ServiceTest < ActiveSupport::TestCase
 
         setup do
           Factory(:post)
-          Authenticator.stubs(:authenticated?).with(@username, @password).returns(false)
+          @service.stubs(:authenticate!).with(@username, @password).raises(Api::Service::UnauthenticatedError)
         end
 
-        should "return nil" do
-          assert_nil @get_recent_posts_method.call(1)
+        should "raise an exception" do
+          assert_raise(Api::Service::UnauthenticatedError) { @get_recent_posts_method.call(1) }
         end
 
       end
@@ -218,7 +218,7 @@ class Api::ServiceTest < ActiveSupport::TestCase
       context "as an authenticated user" do
         
         setup do
-          Authenticator.stubs(:authenticated?).with(@username, @password).returns(true)
+          @service.stubs(:authenticate!).with(@username, @password).returns(true)
           @get_categories_method = lambda { @service.getCategories(0, @username, @password) }
         end
         
