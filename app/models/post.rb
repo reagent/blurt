@@ -21,6 +21,18 @@ class Post < ActiveRecord::Base
   
   before_validation :generate_slug
   after_save :save_tags
+
+  def self.per_page
+    Configuration.application.per_page
+  end
+  
+  def self.page_count
+    (self.count.to_f / self.per_page).floor + 1
+  end
+  
+  def self.for_page(page_number)
+    PaginatedPost.new(:page => page_number)
+  end
   
   def tag_names
     @tag_names ||= self.tags.map(&:name)

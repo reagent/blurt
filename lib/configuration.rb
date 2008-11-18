@@ -37,7 +37,7 @@ class Configuration
     extend ConfigurationReader::ClassMethods
     include ConfigurationReader::InstanceMethods
     
-    configuration_reader :theme
+    configuration_reader :theme, :per_page
 
     def base_url
       port_spec = ":#{@configuration['port']}" if (@configuration['port'] && @configuration['port'].to_s != '80')

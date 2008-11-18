@@ -7,6 +7,32 @@ class PostTest < ActiveSupport::TestCase
   should_have_many :taggings
   should_have_many :tags
   
+  context "The Post class" do
+    
+    should "know how many posts to show on a page" do
+      Configuration.stubs(:application).returns(mock(:per_page => 10))
+      assert_equal 10, Post.per_page
+    end
+    
+    should "return 1 as the default page count" do
+      Configuration.stubs(:application).returns(mock(:per_page => 10))
+      assert_equal 1, Post.page_count
+    end
+    
+    should "know the page count when there is more than 1 page" do
+      Post.stubs(:per_page).returns(5)
+      Post.stubs(:count).returns(6)
+      
+      assert_equal 2, Post.page_count
+    end
+    
+    should "be able to pull posts by page" do
+      PaginatedPost.expects(:new).with(:page => 1).returns([stub()])
+      Post.for_page(1)
+    end
+    
+  end
+  
   context "An instance of the Post class" do
     
     setup { @post = Post.new }
