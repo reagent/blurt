@@ -15,7 +15,6 @@ class PostTest < ActiveSupport::TestCase
     end
     
     should "return 1 as the default page count" do
-      Configuration.stubs(:application).returns(mock(:per_page => 10))
       assert_equal 1, Post.page_count
     end
     
@@ -26,9 +25,21 @@ class PostTest < ActiveSupport::TestCase
       assert_equal 2, Post.page_count
     end
     
+    should "know the page count when the record count falls exactly on the page threshold" do
+      Post.stubs(:per_page).returns(1)
+      Post.stubs(:count).returns(2)
+      
+      assert_equal 2, Post.page_count
+    end
+    
     should "be able to pull posts by page" do
       PaginatedPost.expects(:new).with(:page => 1).returns([stub()])
       Post.for_page(1)
+    end
+    
+    should "default the page to 1 when pulling posts by page" do
+      PaginatedPost.expects(:new).with(:page => 1)
+      Post.for_page(nil)
     end
     
   end

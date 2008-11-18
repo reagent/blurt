@@ -27,10 +27,11 @@ class Post < ActiveRecord::Base
   end
   
   def self.page_count
-    (self.count.to_f / self.per_page).floor + 1
+    (self.count == 0) ? 1 : (self.count.to_f / self.per_page).ceil
   end
   
   def self.for_page(page_number)
+    page_number = 1 if page_number.blank?
     PaginatedPost.new(:page => page_number)
   end
   

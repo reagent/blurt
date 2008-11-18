@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def index
-    @posts = Post.by_date
+    @posts = Post.for_page(params[:page])
   end
   
   def show

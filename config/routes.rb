@@ -7,7 +7,8 @@ ActionController::Routing::Routes.draw do |map|
     tags.tags 'tags', :action => 'index'
   end
 
-  map.root :controller => 'posts'
+  map.posts 'page/:page', :controller => 'posts', :action => 'index'
+  map.root  :controller => 'posts', :action => 'index'
 
   # MetaWeblog API-enabled admin section
   map.admin 'admin', :controller => 'api', :action => 'api'
