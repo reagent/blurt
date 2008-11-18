@@ -4,6 +4,8 @@ class PostsControllerTest < ActionController::TestCase
 
   context "A GET to :index" do
 
+    setup { Post.stubs(:per_page).with().returns(1) }
+
     context "for HTML content" do
       setup do
         get :index

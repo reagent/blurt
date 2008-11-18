@@ -12,10 +12,20 @@ task :test do
 end
  
 namespace :test do
-  Rake::TestTask.new(:helpers => "db:test:prepare") do |t|
+  Rake::TestTask.new(:helpers) do |t|
     t.libs << "test"
     t.pattern = 'test/helpers/**/*_test.rb'
     t.verbose = true
   end
   Rake::Task['test:units'].comment = "Run the helper tests in test/helpers"
+  
+  task :force_environment do
+    ENV['RAILS_ENV'] = RAILS_ENV = 'test'
+  end
+end
+
+%w(test:units test:functionals test:helpers test:integration).each do |task_name|
+  task = Rake::Task[task_name]
+  task.clear_prerequisites
+  task.enhance ['test:force_environment', 'environment', 'db:test:prepare']
 end

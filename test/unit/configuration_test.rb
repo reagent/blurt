@@ -4,19 +4,19 @@ class ConfigurationTest < ActiveSupport::TestCase
 
   context "An instance of the Configuration::Application class" do
     
-    should "have a :base_url without a port when none is provided" do
+    should "have a :host accessor" do
       configuration = Configuration::Application.new('host' => 'localhost')
-      assert_equal 'http://localhost/', configuration.base_url
+      assert_equal 'localhost', configuration.host
     end
     
-    should "have a :base_url with a port when one is provided" do
-      configuration = Configuration::Application.new('host' => 'localhost', 'port' => 3000)
-      assert_equal 'http://localhost:3000/', configuration.base_url
+    should "return nil for :port if it is set to 80" do
+      configuration = Configuration::Application.new('port' => '80')
+      assert_nil configuration.port
     end
     
-    should "have a :base_url without a port when it is equal to 80" do
-      configuration = Configuration::Application.new('host' => 'localhost', 'port' => 80)
-      assert_equal 'http://localhost/', configuration.base_url
+    should "return the port if it is not set to 80" do
+      configuration = Configuration::Application.new('port' => '3000')
+      assert_equal '3000', configuration.port
     end
     
     should "have a :theme accessor" do

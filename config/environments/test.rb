@@ -22,3 +22,8 @@ config.gem 'thoughtbot-factory_girl', :lib => 'factory_girl'
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
+
+::ActionController::UrlWriter.module_eval do
+  default_url_options[:host] = 'localhost'
+  default_url_options[:protocol] = 'http'
+end

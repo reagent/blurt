@@ -2,6 +2,8 @@ class Post < ActiveRecord::Base
   
   extend Sluggable::ClassMethods
   include Sluggable::InstanceMethods
+
+  include ActionController::UrlWriter
   
   slug_column :title
   
@@ -46,7 +48,8 @@ class Post < ActiveRecord::Base
   end
   
   def permalink
-    "#{Configuration.application.base_url}#{self.slug}"
+    permalink_url(self)
+    # "#{Configuration.application.base_url}#{self.slug}"
   end
   
   private
