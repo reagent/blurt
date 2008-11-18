@@ -49,6 +49,12 @@ The formatter uses CodeRay (http://coderay.rubychan.de/) internally so any of th
 * Auto-recognition of content (e.g. video / mp3) and generation of embed codes
 * Plugins
 
+== Thanks
+
+* Kevin (http://github.com/n3bulous) for his help with theme support
+* Clinton (http://github.com/crnixon) for help with relocating views
+* Mig (http://github.com/mig) for help with MetaWeblog + Rails
+
 == Author
 
 * Patrick Reagan (reaganpr@gmail.com)
