@@ -26,6 +26,6 @@ end
 
 %w(test:units test:functionals test:helpers test:integration).each do |task_name|
   task = Rake::Task[task_name]
-  task.clear_prerequisites
+  task.prerequisites.clear
   task.enhance ['test:force_environment', 'environment', 'db:test:prepare']
 end
