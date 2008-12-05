@@ -29,7 +29,7 @@ else
   # Passenger does not like a symlink in place of the public directory.
   dir = Dir.new(ASSET_BASE)
   while d=dir.read
-    File.symlink("#{ASSET_BASE}/#{d}", "#{PUBLIC_PATH}/#{d}") unless d == "." || d == ".."
+    File.symlink("#{ASSET_BASE}/#{d}", "#{PUBLIC_PATH}/#{d}") unless d[0,1] == "."
   end
   dir.close
   
