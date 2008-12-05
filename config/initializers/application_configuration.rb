@@ -6,7 +6,15 @@ else
   Configuration.from_file "#{RAILS_ROOT}/config/blurt.yml"
 
   PUBLIC_PATH = "#{RAILS_ROOT}/public"
-  THEME_PATH = "#{RAILS_ROOT}/app/themes/#{Configuration.application.theme}"
+  
+  # Accept either a name of a theme or a full path to the theme directory.
+  if Configuration.application.theme.index("/")
+    THEME_PATH = "#{Configuration.application.theme}"
+  else
+    THEME_PATH = "#{RAILS_ROOT}/app/themes/#{Configuration.application.theme}"
+  end
+  
+
   ASSET_BASE = "#{THEME_PATH}/assets"
 
   # Purge non-leading dot contents of public directory.
