@@ -5,21 +5,26 @@ else
 
   Configuration.from_file "#{RAILS_ROOT}/config/blurt.yml"
 
+  PUBLIC_PATH = "#{RAILS_ROOT}/public"
   THEME_PATH = "#{RAILS_ROOT}/app/themes/#{Configuration.application.theme}"
+  ASSET_BASE = "#{THEME_PATH}/assets"
 
-  FileUtils.mkdir("#{RAILS_ROOT}/public") if !File.exist?("#{RAILS_ROOT}/public")
-  FileUtils.rm_rf("#{RAILS_ROOT}/public/*") if File.exist?("#{RAILS_ROOT}/public")
+  # Purge non-leading dot contents of public directory.
+  FileUtils.mkdir("#{PUBLIC_PATH}") if !File.exist?("#{PUBLIC_PATH}")
+  dir = Dir.new(PUBLIC_PATH)
+  while d=dir.read
+    FileUtils.rm_f("#{PUBLIC_PATH}/#{d}") unless d[0,1] == "."
+  end
+  dir.close
   
   # Symlink all asset files into public since
   # Passenger does not like a symlink in place of the public directory.
-  ASSET_BASE = "#{THEME_PATH}/assets"
   dir = Dir.new(ASSET_BASE)
   while d=dir.read
-    if d != "." && d != ".."
-      File.symlink("#{ASSET_BASE}/#{d}", "#{RAILS_ROOT}/public/#{d}")
-    end
+    File.symlink("#{ASSET_BASE}/#{d}", "#{PUBLIC_PATH}/#{d}") unless d == "." || d == ".."
   end
-
+  dir.close
+  
   ::ActionController::UrlWriter.module_eval do
     default_url_options[:host]     = Configuration.application.host
     default_url_options[:protocol] = 'http'
