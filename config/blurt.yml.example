@@ -3,6 +3,7 @@ application:
   port: 3000
   theme: default
   per_page: 20
+  name: My Sweet Blog
 
 authentication:
   username: username

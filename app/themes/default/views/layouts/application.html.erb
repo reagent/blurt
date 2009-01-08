@@ -3,7 +3,7 @@
 
 <html>
 <head>
-  <title>blurt.</title>
+  <title><%= title %></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <%= stylesheet_link_tag 'blurt' %>
   <%= auto_discovery_link_tag :rss, feed_url %>
@@ -11,7 +11,7 @@
 <body>
   <div id="main">
     <div id="header">
-      blurt. rhymes with dirt.
+      <%= link_to 'blurt. rhymes with dirt.', root_path %>
     </div>
     <%= yield %>
     <div id="footer">

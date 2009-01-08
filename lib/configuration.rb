@@ -37,7 +37,7 @@ class Configuration
     extend ConfigurationReader::ClassMethods
     include ConfigurationReader::InstanceMethods
     
-    configuration_reader :host, :theme, :per_page
+    configuration_reader :host, :theme, :per_page, :name
     
     def port
       @configuration['port'] unless @configuration['port'].to_s == '80'

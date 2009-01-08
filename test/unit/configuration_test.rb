@@ -24,6 +24,11 @@ class ConfigurationTest < ActiveSupport::TestCase
       assert_equal 'default', configuration.theme
     end
     
+    should "have a :name accessor" do
+      configuration = Configuration::Application.new('name' => 'blurt.')
+      assert_equal 'blurt.', configuration.name
+    end
+    
   end
   
   context "An instance of the Configuration::Authentication class" do

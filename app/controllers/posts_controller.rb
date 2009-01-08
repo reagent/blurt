@@ -5,7 +5,11 @@ class PostsController < ApplicationController
   
   def show
     @post = Post.find_by_slug(params[:id])
-    redirect_to root_path if @post.nil?
+    if @post
+      title.prepend @post.title
+    else
+      redirect_to root_path and return
+    end
   end
 
 end

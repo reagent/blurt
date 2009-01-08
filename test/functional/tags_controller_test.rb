@@ -4,7 +4,10 @@ class TagsControllerTest < ActionController::TestCase
 
   context "A GET to :index" do
     
-    setup { get :index }
+    setup do
+      Configuration.stubs(:application).returns(stub(:name => 'blurt'))
+      get :index 
+    end
     
     should_assign_to :tags
     should_respond_with :success
@@ -14,7 +17,10 @@ class TagsControllerTest < ActionController::TestCase
   
   context "A GET to :show" do
     
-    setup { @tag = Factory(:tag) }
+    setup do
+      Configuration.stubs(:application).returns(stub(:name => 'blurt'))
+      @tag = Factory(:tag)
+    end
     
     context "with a valid slug" do
       
