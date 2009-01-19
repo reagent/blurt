@@ -76,27 +76,26 @@ module Blurt
         setup do
           @upload_dir = 'uploads'
 
-          @fs = TestFs::RootDirectory.new
-
-          @fs.dir 'public' do |p|
-            p.dir @upload_dir
-            p.file '404.html'
-          end
-
-          @fs.dir 'app' do |a|
-            a.dir 'themes' do |t|
-              t.dir 'my_theme' do |mt|
-                mt.dir 'assets' do |at|
-                  at.dir 'javascripts'
-                  at.dir 'images' do |i|
-                    i.file 'me.jpg'
+          @fs = setup_filesystem do |root|
+            root.dir 'public' do |public|
+              public.dir @upload_dir
+              public.file '404.html'
+            end
+            
+            root.dir 'app' do |app|
+              app.dir 'themes' do |themes|
+                themes.dir 'my_theme' do |theme|
+                  theme.dir 'assets' do |assets|
+                    assets.dir 'javascripts'
+                    assets.dir 'images' do |images|
+                      images.file 'me.jpg'
+                    end
                   end
                 end
               end
             end
           end
 
-          @fs.create!
           @configuration = Configuration.new(@fs.path)
         end
 
