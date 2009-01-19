@@ -5,7 +5,7 @@ class TagsControllerTest < ActionController::TestCase
   context "A GET to :index" do
     
     setup do
-      Configuration.stubs(:application).returns(stub(:name => 'blurt'))
+      Blurt.stubs(:configuration).returns(stub(:name => 'blurt'))
       get :index 
     end
     
@@ -18,7 +18,7 @@ class TagsControllerTest < ActionController::TestCase
   context "A GET to :show" do
     
     setup do
-      Configuration.stubs(:application).returns(stub(:name => 'blurt'))
+      Blurt.stubs(:configuration).returns(stub(:name => 'blurt'))
       @tag = Factory(:tag)
     end
     

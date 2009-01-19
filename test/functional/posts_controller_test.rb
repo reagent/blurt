@@ -5,7 +5,7 @@ class PostsControllerTest < ActionController::TestCase
   context "A GET to :index" do
 
     setup do
-      Configuration.stubs(:application).with().returns(stub(:name => 'blurt.'))
+      Blurt.stubs(:configuration).with().returns(stub(:name => 'blurt.'))
       Post.stubs(:per_page).with().returns(1)
     end
 
@@ -32,7 +32,7 @@ class PostsControllerTest < ActionController::TestCase
   context "A GET to :show" do
     
     setup do
-      Configuration.stubs(:application).with().returns(stub(:name => 'blurt.'))
+      Blurt.stubs(:configuration).with().returns(stub(:name => 'blurt.'))
     end
     
     context "with a valid Post slug" do
