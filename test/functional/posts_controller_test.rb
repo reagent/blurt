@@ -5,7 +5,7 @@ class PostsControllerTest < ActionController::TestCase
   context "A GET to :index" do
 
     setup do
-      Blurt.stubs(:configuration).with().returns(stub(:name => 'blurt.'))
+      Blurt.stubs(:configuration).with().returns(stub(:name => 'blurt.', :tagline => 'durt.'))
       Post.stubs(:per_page).with().returns(1)
     end
 
