@@ -6,7 +6,7 @@ class TitleTest < ActiveSupport::TestCase
     
     setup do
       @name = 'blurt.'
-      Configuration.expects(:application).returns(stub(:name => @name))
+      Blurt.expects(:configuration).returns(stub(:name => @name))
     end
     
     should "have a default value" do

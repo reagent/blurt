@@ -5,7 +5,9 @@ module Blurt
   end
   
   def self.setup(&block)
-    yield self.configuration
+    configuration = self.configuration
+    yield configuration
+    configuration.move_asset_files!
   end
   
 end

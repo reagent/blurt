@@ -24,11 +24,25 @@ class BlurtTest < ActiveSupport::TestCase
       theme_name = 'my_theme'
       theme      = stub()
       
-      configuration = mock {|m| m.expects(:theme=).with(theme_name).returns(theme) }
+      configuration = mock do |m|
+        m.expects(:theme=).with(theme_name).returns(theme)
+        m.stubs(:move_asset_files!)
+      end
       
       Blurt::Configuration.expects(:new).with(Rails.root).returns(configuration)
       
       Blurt.setup {|config| config.theme = theme_name }
+    end
+    
+    should "move asset files as part of setup" do
+      configuration = mock do |m| 
+        m.expects(:name=).with('sneaq')
+        m.expects(:move_asset_files!).with()
+      end
+      
+      Blurt.stubs(:configuration).with().returns(configuration)
+      
+      Blurt.setup {|config| config.name = 'sneaq' }
     end
     
   end

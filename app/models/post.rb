@@ -21,7 +21,7 @@ class Post < ActiveRecord::Base
   after_save :save_tags
 
   def self.per_page
-    Configuration.application.per_page
+    Blurt.configuration.per_page
   end
   
   def self.page_count
@@ -45,7 +45,6 @@ class Post < ActiveRecord::Base
   
   def permalink
     permalink_url(self)
-    # "#{Configuration.application.base_url}#{self.slug}"
   end
   
   private

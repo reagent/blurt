@@ -49,9 +49,9 @@ module Api
     
     private
     def authenticate!(username, password)
-      authenticated   = Configuration.authentication.username == username
-      authenticated &&= Configuration.authentication.password == password
-      
+      authenticated   = (Blurt.configuration.username == username)
+      authenticated &&= (Blurt.configuration.password == password)
+
       raise UnauthenticatedError, "Could not authenticate this user, please check your credentials" unless authenticated
     end
     

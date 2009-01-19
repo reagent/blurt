@@ -10,7 +10,7 @@ class PostTest < ActiveSupport::TestCase
   context "The Post class" do
     
     should "know how many posts to show on a page" do
-      Configuration.stubs(:application).returns(mock(:per_page => 10))
+      Blurt.stubs(:configuration).returns(mock(:per_page => 10))
       assert_equal 10, Post.per_page
     end
     
@@ -91,12 +91,8 @@ class PostTest < ActiveSupport::TestCase
     end
     
     should "be able to generate its own permalink" do
-      base_url = 'http://localhost/'
-      Configuration.stubs(:application).returns(stub(:base_url => base_url))
-      
-      @post.stubs(:slug).returns('post-title')
-      
-      assert_equal "#{base_url}post-title", @post.permalink
+      @post.expects(:permalink_url).with(@post).returns('permalink')
+      assert_equal 'permalink', @post.permalink
     end
     
     context "with a list of assigned tag names" do

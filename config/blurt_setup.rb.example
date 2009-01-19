@@ -1,0 +1,26 @@
+# Example blog configuration.  Copy this file to config/blurt_setup.rb
+#
+Blurt.setup do |config|
+
+  # The name of your blog
+  config.name        = 'my sweet blog'
+  
+  # The tagline for your blog
+  config.tagline     = 'the mundane details of my meaningless existence'
+  
+  # The theme that your blog will use.  This can either be a name (e.g. 'my_theme')
+  # or a full path to a theme on the filesystem.  If just a name is supplied, the 
+  # configuration will look in app/themes/<theme_name>
+  #
+  # config.theme       = :default
+  # config.theme       = '/Users/me/themes/blog_theme'
+  
+  # The number of posts to display per page
+  config.per_page    = 20
+  
+  # The URL for this blog - this will be used to generate permalinks
+  config.url         = 'http://localhost:3000/'
+  
+  # The username / password to post to this blog
+  config.credentials = 'user:fluffybunnies'
+end

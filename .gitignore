@@ -1,5 +1,6 @@
 /config/database.yml
 /config/blurt.yml
+/config/blurt_setup.rb
 /tmp/*
 /test/fixtures/*.yml
 /log/*

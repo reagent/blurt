@@ -1,7 +1,7 @@
 class Title
   
   def initialize
-    @parts = Array(Configuration.application.name)
+    @parts = Array(Blurt.configuration.name)
   end
   
   def prepend(*elements)

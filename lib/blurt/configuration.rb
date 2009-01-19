@@ -1,12 +1,13 @@
 module Blurt
   class Configuration
     
-    attr_accessor :name, :tagline
+    attr_accessor :name, :tagline, :per_page
     attr_reader   :theme, :url, :username, :password
     attr_writer   :upload_dir
     
     def initialize(root_path)
       @root_path = root_path
+      @theme = Theme.new(:default, @root_path)
     end
     
     def theme=(theme_name)
@@ -44,6 +45,5 @@ module Blurt
       files_to_remove.each {|file| FileUtils.rm_rf(file) }
       Dir["#{self.theme.asset_path}/*"].each {|f| File.symlink(f, "#{self.public_path}/#{File.basename(f)}") }
     end
-    private :move_asset_files!
   end
 end

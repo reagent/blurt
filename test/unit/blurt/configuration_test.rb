@@ -21,6 +21,11 @@ module Blurt
         assert_equal 'foo', @configuration.name
       end
       
+      should "have a default theme" do
+        assert_equal 'default', @configuration.theme.name
+        assert_equal "#{@root_path}/app/themes/default", @configuration.theme.path
+      end
+      
       should "be able to set its theme" do
         theme = stub()
         
@@ -106,7 +111,7 @@ module Blurt
             @configuration.theme      = :my_theme
             @configuration.upload_dir = @upload_dir
             
-            @configuration.send(:move_asset_files!)
+            @configuration.move_asset_files!
           end
           
           should "destroy the contents of the public directory" do
