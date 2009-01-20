@@ -43,7 +43,7 @@ module Api
     end
   
     # Add authentication to API methods
-    [:newPost, :getPost, :editPost, :getRecentPosts, :getCategories].each do |method_name|
+    [:newPost, :getPost, :editPost, :getRecentPosts, :getCategories, :newMediaObject].each do |method_name|
       class_eval <<-EOM
         def #{method_name}_with_authentication(*params)
           authenticate!(params[1], params[2])

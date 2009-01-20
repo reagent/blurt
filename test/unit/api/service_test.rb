@@ -214,12 +214,14 @@ class Api::ServiceTest < ActiveSupport::TestCase
     end
     
     context "when retrieving the category list" do
+
+      setup do
+        @get_categories_method = lambda { @service.getCategories(0, @username, @password) }
+      end
       
       context "as an authenticated user" do
-        
         setup do
           @service.stubs(:authenticate!).with(@username, @password).returns(true)
-          @get_categories_method = lambda { @service.getCategories(0, @username, @password) }
         end
         
         should "return an array of categories" do
@@ -236,19 +238,30 @@ class Api::ServiceTest < ActiveSupport::TestCase
           Factory(:tag, :name => 'a')
           
           assert_equal %w(a b), @get_categories_method.call.map {|category| category['description']}
-          
         end
-        
+      end
+
+      context "as an unauthenticated user" do
+        setup do
+          @service.stubs(:authenticate!).with(@username, @password).raises(Api::Service::UnauthenticatedError)
+        end
+
+        should "raise an exception" do
+          assert_raise(Api::Service::UnauthenticatedError) { @get_categories_method.call }
+        end
       end
       
     end
     
     context "when uploading a media file" do
+      setup do
+        @struct = Api::Struct::Media.new(:name => 'foo.jpg', :type => 'image/jpeg', :bits => '123')
+        @new_media_method = lambda { @service.newMediaObject(0, @username, @password, @struct) }
+      end
+      
       context "as an authenticated user" do
         setup do
           @service.stubs(:authenticate!).with(@username, @password).returns(true)
-          @struct = Api::Struct::Media.new(:name => 'foo.jpg', :type => 'image/jpeg', :bits => '123')
-          @new_media_method = lambda { @service.newMediaObject(0, @username, @password, @struct) }
         end
         
         should "save the media file" do
@@ -272,6 +285,22 @@ class Api::ServiceTest < ActiveSupport::TestCase
           assert_equal 'struct', @new_media_method.call
         end
       end
+      
+      context "as an unauthenticated user" do
+        setup do
+          @service.stubs(:authenticate!).with(@username, @password).raises(Api::Service::UnauthenticatedError)
+        end
+
+        should "raise an exception" do
+          assert_raise(Api::Service::UnauthenticatedError) { @new_media_method.call }
+        end
+
+        should "not save any files" do
+          ::Media.any_instance.expects(:save!).never
+          @new_media_method.call rescue nil
+        end
+      end
+      
     end
 
   end
