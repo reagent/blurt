@@ -15,7 +15,7 @@ class Media
   end
 
   def subdirectory
-    Time.now.strftime('%Y-%m-%d')
+    Time.now.strftime('%Y-%m')
   end
 
   def path

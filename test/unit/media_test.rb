@@ -25,7 +25,7 @@ class MediaTest < ActiveSupport::TestCase
         time = Time.parse('2009-08-01 00:00:00')
         Time.expects(:now).at_least_once.with().returns(time)
         
-        assert_equal '2009-08-01', @media.subdirectory
+        assert_equal '2009-08', @media.subdirectory
       end
 
       should "know the path to save files" do
