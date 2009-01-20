@@ -11,7 +11,7 @@ class Media
   end
 
   def data
-    Base64.decode64(@bits) unless @bits.nil?
+    @bits
   end
 
   def subdirectory
@@ -36,6 +36,7 @@ class Media
 
   def save
     begin
+      self.create_path!
       File.open("#{self.path}/#{self.filename}", 'w') {|f| f << self.data }
       true
     rescue
@@ -43,8 +44,12 @@ class Media
     end
   end
 
+  def create_path!
+    FileUtils.mkdir(self.path) unless File.exist?(self.path)
+  end
+
   def save!
-    raise UploadError, 'Could not save file' unless self.save
+    raise UploadError, "Could not save file" unless self.save
   end
 
 end

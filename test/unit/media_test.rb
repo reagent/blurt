@@ -17,9 +17,8 @@ class MediaTest < ActiveSupport::TestCase
         assert_equal 'image/jpeg', @media.mime_type
       end
 
-      should "decode and return a value for :data" do
-        Base64.expects(:decode64).with('bitty').returns('data')
-        assert_equal 'data', @media.data
+      should "have a value for :data" do
+        assert_equal 'bitty', @media.data
       end
 
       should "know the subdirectory path" do
@@ -35,6 +34,29 @@ class MediaTest < ActiveSupport::TestCase
         @media.expects(:subdirectory).with().returns('2009-08-01')
 
         assert_equal '/projects/blurt/public/uploads/2009-08-01', @media.path
+      end
+      
+      should "create the upload path" do
+        @media.expects(:path).at_least_once.with().returns('/uploads')
+        FileUtils.expects(:mkdir).with('/uploads')
+        
+        @media.create_path!
+      end
+      
+      should "not create the upload path if it exists" do
+        @media.expects(:path).at_least_once.with().returns('/uploads')
+        
+        File.expects(:exist?).with('/uploads').returns(true)
+        FileUtils.expects(:mkdir).with('/uploads').never
+        
+        @media.create_path!
+      end
+      
+      should "create the path when saving the file" do
+        @media.expects(:create_path!)
+        File.stubs(:open)
+        
+        @media.save
       end
       
       should "be able to save the file to disk" do

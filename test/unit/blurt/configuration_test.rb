@@ -21,6 +21,11 @@ module Blurt
         assert_equal 'foo', @configuration.name
       end
       
+      should "have an accessor for :upload_dir" do
+        @configuration.upload_dir = 'uploads'
+        assert_equal 'uploads', @configuration.upload_dir
+      end
+      
       should "have a default theme" do
         assert_equal 'default', @configuration.theme.name
         assert_equal "#{@root_path}/app/themes/default", @configuration.theme.path
@@ -70,11 +75,36 @@ module Blurt
         @configuration.expects(:public_path).with().returns('/root/public')
         @configuration.upload_dir = 'uploads'
         
-        assert_equal '/root/public/uploads', @configuration.upload_dir
+        assert_equal '/root/public/uploads', @configuration.upload_path
+      end
+      
+      should "not have an :upload_path if :upload_dir is not set" do
+        assert_nil @configuration.upload_path
       end
       
       should "know the public path" do
         assert_equal "#{@root_path}/public", @configuration.public_path
+      end
+      
+      should "be able to create the upload directory" do
+        @configuration.upload_dir = 'uploads'
+        FileUtils.expects(:mkdir).with(@configuration.upload_path)
+        
+        @configuration.create_upload_directory!
+      end
+      
+      should "not create the upload directory if it exists" do
+        @configuration.upload_dir = 'uploads'
+        
+        File.expects(:exist?).with(@configuration.upload_path).returns(true)
+        FileUtils.expects(:mkdir).with(@configuration.upload_path).never
+        
+        @configuration.create_upload_directory!
+      end
+      
+      should "not create a directory if the upload path is not set" do
+        FileUtils.expects(:mkdir).never
+        @configuration.create_upload_directory!
       end
       
       context "with a directory structure" do
@@ -85,6 +115,7 @@ module Blurt
             root.dir 'public' do |public|
               public.dir @upload_dir
               public.file '404.html'
+              public.file '.hidden'
             end
             
             root.dir 'app' do |app|
@@ -106,23 +137,50 @@ module Blurt
 
         teardown { @fs.destroy! }
 
-        context "when moving asset files" do
+        should "have a list of public files" do
+          expected = %w(404.html uploads).map {|f| "#{@fs.path}/public/#{f}" }
+          assert_equal expected, @configuration.public_files
+        end
+        
+        should "ignore the upload dir when retrieving the list of public files" do
+          expected = [ "#{@fs.path}/public/404.html" ]
+          @configuration.upload_dir = 'uploads'
+          
+          assert_equal expected, @configuration.public_files
+        end
+        
+        should "have a list of asset files" do
+          expected = %w(javascripts images).inject({}) do |result, f|
+            result.merge("#{@fs.path}/app/themes/my_theme/assets/#{f}" => f)
+          end
+          
+          @configuration.theme      = :my_theme
+          assert_equal expected, @configuration.asset_files
+        end
+
+        context "when preparing the public directory" do
           setup do 
             @configuration.theme      = :my_theme
             @configuration.upload_dir = @upload_dir
-            
-            @configuration.move_asset_files!
+          end
+          
+          should "create the upload directory" do
+            @configuration.expects(:create_upload_directory!)
+            @configuration.prepare_public_directory!
           end
           
           should "destroy the contents of the public directory" do
+            @configuration.prepare_public_directory!
             assert_equal false, File.exist?("#{@fs.path}/public/404.html")
           end
 
           should "keep the upload directory intact" do
+            @configuration.prepare_public_directory!
             assert_equal true, File.exist?("#{@fs.path}/public/#{@upload_dir}")
           end
 
           should "move the files in the assets directory to the public directory" do
+            @configuration.prepare_public_directory!
             assert_equal true, File.exist?("#{@fs.path}/public/javascripts")
             assert_equal true, File.exist?("#{@fs.path}/public/images/me.jpg")
           end

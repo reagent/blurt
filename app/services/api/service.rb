@@ -35,6 +35,13 @@ module Api
       Tag.by_name.map {|tag| Api::Struct::Tag.from_active_record(tag)}
     end
   
+    def newMediaObject(blog_id, username, password, struct)
+      media = ::Media.new(struct)
+      media.save!
+      
+      media.to_struct
+    end
+  
     # Add authentication to API methods
     [:newPost, :getPost, :editPost, :getRecentPosts, :getCategories].each do |method_name|
       class_eval <<-EOM

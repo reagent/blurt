@@ -243,7 +243,36 @@ class Api::ServiceTest < ActiveSupport::TestCase
       
     end
     
-
+    context "when uploading a media file" do
+      context "as an authenticated user" do
+        setup do
+          @service.stubs(:authenticate!).with(@username, @password).returns(true)
+          @struct = Api::Struct::Media.new(:name => 'foo.jpg', :type => 'image/jpeg', :bits => '123')
+          @new_media_method = lambda { @service.newMediaObject(0, @username, @password, @struct) }
+        end
+        
+        should "save the media file" do
+          media_model = mock do |m| 
+            m.expects(:save!).with()
+            m.stubs(:to_struct)
+          end
+          ::Media.expects(:new).with(@struct).returns(media_model)
+          
+          @new_media_method.call
+        end
+        
+        should "return a struct that represents the new file" do
+          media_model = mock do |m|
+            m.stubs(:save!).with()
+            m.expects(:to_struct).with().returns('struct')
+          end
+          
+          ::Media.expects(:new).returns(media_model)
+          
+          assert_equal 'struct', @new_media_method.call
+        end
+      end
+    end
 
   end
 

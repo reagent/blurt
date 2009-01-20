@@ -47,5 +47,14 @@ module Api
       ],
       :returns => [[Api::Struct::Tag]]
 
+    api_method :newMediaObject,
+      :expects => [
+        {:blogid   => :string},
+        {:username => :string},
+        {:password => :string},
+        {:struct   => Api::Struct::Media}
+      ],
+      :returns => [Api::Struct::Media]
+
   end
 end

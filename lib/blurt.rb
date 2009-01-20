@@ -7,7 +7,7 @@ module Blurt
   def self.setup(&block)
     configuration = self.configuration
     yield configuration
-    configuration.move_asset_files!
+    configuration.prepare_public_directory!
   end
   
 end
