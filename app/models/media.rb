@@ -30,6 +30,10 @@ class Media
     "#{base_url}/#{upload_dir}/#{self.filename}"
   end
 
+  def to_struct
+    Api::Struct::Media.new(:url => self.url)
+  end
+
   def save
     begin
       File.open("#{self.path}/#{self.filename}", 'w') {|f| f << self.data }
@@ -41,10 +45,6 @@ class Media
 
   def save!
     raise UploadError, 'Could not save file' unless self.save
-  end
-
-  def clean!
-    @bits = nil
   end
 
 end

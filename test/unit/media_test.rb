@@ -64,11 +64,6 @@ class MediaTest < ActiveSupport::TestCase
         end
       end
       
-      should "be able to clean the associated filedata" do
-        @media.clean!
-        assert_nil @media.data
-      end
-      
       should "Return the URL for the saved file" do
         url = stub(:to_s => 'http://blurt.net/')
         
@@ -83,6 +78,15 @@ class MediaTest < ActiveSupport::TestCase
         @media.expects(:subdirectory).with().returns('2009-08-01')
         
         assert_equal 'http://blurt.net/uploads/2009-08-01/foo.jpg', @media.url
+      end
+      
+      should "be able to generate the struct representation of itself" do
+        @media.stubs(:url).with().returns('url')
+        
+        struct = @media.to_struct
+        
+        assert_equal true, struct.is_a?(Api::Struct::Media)
+        assert_equal 'url', struct['url']
       end
       
     end
