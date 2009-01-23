@@ -8,8 +8,13 @@ class Title
     elements.each {|element| @parts.unshift(element) unless element.nil? }
   end
   
+  def append(*elements)
+    elements.each {|element| @parts.push(element) unless element.nil? }
+  end
+  
   def to_s
     @parts.join(' | ')
   end
+  
   
 end

@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def index
-    title.prepend Blurt.configuration.tagline
+    title.append Blurt.configuration.tagline
     @posts = Post.for_page(params[:page])
   end
   

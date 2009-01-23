@@ -33,6 +33,25 @@ class TitleTest < ActiveSupport::TestCase
       assert_equal @name, title.to_s
     end
     
+    should "be able to append to the title" do
+      title = Title.new
+      title.append('tagline')
+      assert_equal "#{@name} | tagline", title.to_s
+    end
+    
+    should "be able to append multiple contents to the title" do
+      title = Title.new
+      title.append 'one', 'two'
+      assert_equal "#{@name} | one | two", title.to_s
+    end
+   
+    should "not change the title when appending a nil value" do
+      title = Title.new
+      title.append nil
+      
+      assert_equal @name, title.to_s
+    end
+    
   end
   
 end
