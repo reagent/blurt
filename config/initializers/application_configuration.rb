@@ -13,5 +13,5 @@ if File.exist?(config_file)
 end
 
 class ActionController::Base
-  self.view_paths = [ Blurt.configuration.theme.view_path ]
+  self.view_paths = [ Blurt.configuration.theme.view_path, "#{Rails.root}/app/themes/default/views"]
 end
