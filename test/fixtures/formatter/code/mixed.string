@@ -1,2 +1,8 @@
 **strong content**
-<code lang="ruby">require 'rubygems'</code>
+    
+    #lang:ruby
+    require 'rubygems'
+
+more codes
+
+    $ grep foo
