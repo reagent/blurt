@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
-  map.feed 'feed', :controller => 'posts', :action => 'index', :format => :rss
+  map.feed    'feed', :controller => 'posts', :action => 'index', :format => :rss
+  map.sitemap 'sitemap.xml', :controller => 'sitemap', :action => 'show', :format => 'xml'
 
   map.with_options :controller => 'tags' do |tags|
     tags.tag  'tag/:slug', :action => 'show'
