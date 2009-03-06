@@ -14,8 +14,6 @@ This is designed to be ultra light-weight.  That means:
   * Specific set of content items (e.g. code / video / image)
   * Possibly trackback support
 
-** I could see myself adding this if others found this software useful.
-
 == Admin
 
 To start adding posts, just point your MetaWeblog-enabled client to this endpoint:
@@ -31,23 +29,22 @@ If you're using TextMate, this means:
 
 == Formatting
 
-The default post formatting is Markdown with additional filters as necessary.  Embedding code is supported through the use of <code> tags:
+The default post formatting is Markdown with additional filters as necessary.  Embedding code is supported through a simple addition to the standard preformatted Markdown text:
   
-    <code lang="ruby">
-      class PostsController < ApplicationController
-        def index
-          @posts = Post.by_date
-        end
+    #lang:ruby
+    class PostsController < ApplicationController
+      def index
+        @posts = Post.by_date
       end
-    </code>
+    end
 
 The formatter uses CodeRay (http://coderay.rubychan.de/) internally so any of the supported programming languages are allowed.
 
 == TODO
 
-* Allow drag & drop of media with MetaWeblog API
 * Auto-recognition of content (e.g. video / mp3) and generation of embed codes
 * Plugins
+* Convert this jonx to Sinatra - Rails is dead, but Sinatra is dead-er.
 
 == Thanks
 
