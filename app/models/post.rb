@@ -1,8 +1,6 @@
 class Post < ActiveRecord::Base
   
-  extend Sluggable::ClassMethods
-  include Sluggable::InstanceMethods
-
+  include Sluggable
   include ActionController::UrlWriter
   
   slug_column :title

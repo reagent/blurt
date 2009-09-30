@@ -1,7 +1,6 @@
 class Tag < ActiveRecord::Base
   
-  extend Sluggable::ClassMethods
-  include Sluggable::InstanceMethods
+  include Sluggable
   
   slug_column :name
   

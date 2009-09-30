@@ -13,10 +13,10 @@ ActiveRecord::Schema.define(:version => 20081027000700) do
 
   create_table "posts", :force => true do |t|
     t.string   "title",      :null => false
+    t.string   "slug",       :null => false
     t.text     "body",       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "slug",       :null => false
   end
 
   add_index "posts", ["slug"], :name => "index_posts_on_slug", :unique => true
@@ -29,13 +29,12 @@ ActiveRecord::Schema.define(:version => 20081027000700) do
   end
 
   add_index "taggings", ["post_id", "tag_id"], :name => "index_taggings_on_post_id_and_tag_id", :unique => true
-  add_index "taggings", ["tag_id"], :name => "fk_taggings_tag_id_tags_id"
 
   create_table "tags", :force => true do |t|
     t.string   "name",       :limit => 32, :null => false
+    t.string   "slug",       :limit => 32, :null => false
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.string   "slug",       :limit => 32, :null => false
   end
 
   add_index "tags", ["slug"], :name => "index_tags_on_slug", :unique => true

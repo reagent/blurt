@@ -1,8 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class SluggableImplementation
-  extend Sluggable::ClassMethods
-  include Sluggable::InstanceMethods
+  include Sluggable
 end
 
 class SluggableImplementationTest < ActiveSupport::TestCase

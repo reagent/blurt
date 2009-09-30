@@ -38,4 +38,10 @@ module Sluggable
     private :next_available_slug, :generate_slug
     
   end
+  
+  def self.included(other)
+    other.send(:extend, Sluggable::ClassMethods)
+    other.send(:include, Sluggable::InstanceMethods)
+  end
+  
 end
