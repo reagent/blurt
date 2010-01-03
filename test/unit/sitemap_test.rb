@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class SitemapTest < ActiveSupport::TestCase
   
@@ -7,7 +7,7 @@ class SitemapTest < ActiveSupport::TestCase
     setup { @sitemap = Sitemap.new }
     
     should "have a :root element" do
-      @sitemap.expects(:root_url).with().returns('root_url')
+      # @sitemap.expects(:root_url).with().returns('root_url')
       ::Post.expects(:maximum).with(:updated_at).returns('max')
       
       root = stub()
@@ -43,7 +43,7 @@ class SitemapTest < ActiveSupport::TestCase
       time = Time.parse('2009-08-01 00:00:00')
       
       Tag.expects(:maximum).with(:updated_at).returns(time)
-      @sitemap.expects(:tags_url).with().returns('tags_url')
+      # @sitemap.expects(:tags_url).with().returns('tags_url')
       
       Sitemap::Element.expects(:new).with(:location => 'tags_url', :modified_at => time).returns(element)
       
@@ -135,30 +135,33 @@ class SitemapTest < ActiveSupport::TestCase
   end
   
   context "An instance of the Sitemap::Post class" do
+    setup do
+      @post = Factory(:post)
+      @post.stubs(:permalink).with().returns('post_url')
+    end
+    
     should "determine the location and modified_at from a post object" do
-      post = Factory(:post)
+      sm_post = Sitemap::Post.new(@post)
       
-      sm_post = Sitemap::Post.new(post)
-      
-      assert_equal post.permalink, sm_post.location
-      assert_equal post.updated_at.strftime('%Y-%m-%d'), sm_post.modified_on
+      assert_equal 'post_url', sm_post.location
+      assert_equal @post.updated_at.strftime('%Y-%m-%d'), sm_post.modified_on
     end
     
     should "have a monthly :change_frequency" do
-      tag = Sitemap::Post.new(Factory(:post))
-      assert_equal 'monthly', tag.change_frequency
+      sm_post = Sitemap::Post.new(@post)
+      assert_equal 'monthly', sm_post.change_frequency
     end
     
     should "have a value for priority" do
-      tag = Sitemap::Post.new(Factory(:post))
-      assert_equal '0.5', tag.priority
+      sm_post = Sitemap::Post.new(@post)
+      assert_equal '0.5', sm_post.priority
     end
   end
   
   context "An instance of the Sitemap::Page class" do
     should "determine the location and modified_at from a page number and post data" do
       ::Post.expects(:maximum).with(:updated_at).returns(Time.parse('2009-08-01 00:00:00'))
-      Sitemap::Page.any_instance.expects(:posts_url).with(1).returns('posts_url')
+      # Sitemap::Page.any_instance.expects(:posts_url).with(1).returns('posts_url')
       
       page = Sitemap::Page.new(1)
       
@@ -168,24 +171,26 @@ class SitemapTest < ActiveSupport::TestCase
   end
   
   context "An instance of the Sitemap::Tag class" do
+    setup do
+      @tag = Factory(:tag)
+      @tag.stubs(:permalink).with().returns('tag_url')
+    end
+    
     should "determine the location and modified_at from a tag object" do
-      tag = Factory(:tag)
-      
-      Sitemap::Tag.any_instance.expects(:tag_url).with(tag).returns('tag_url')
-      sm_tag = Sitemap::Tag.new(tag)
+      sm_tag = Sitemap::Tag.new(@tag)
       
       assert_equal 'tag_url', sm_tag.location
-      assert_equal tag.updated_at.strftime('%Y-%m-%d'), sm_tag.modified_on
+      assert_equal @tag.updated_at.strftime('%Y-%m-%d'), sm_tag.modified_on
     end
     
     should "have a monthly :change_frequency" do
-      tag = Sitemap::Tag.new(Factory(:tag))
-      assert_equal 'monthly', tag.change_frequency
+      sm_tag = Sitemap::Tag.new(@tag)
+      assert_equal 'monthly', sm_tag.change_frequency
     end
     
     should "have a value for priority" do
-      tag = Sitemap::Tag.new(Factory(:tag))
-      assert_equal '0.5', tag.priority
+      sm_tag = Sitemap::Tag.new(@tag)
+      assert_equal '0.5', sm_tag.priority
     end
   end
   

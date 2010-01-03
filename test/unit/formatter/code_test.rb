@@ -1,12 +1,12 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../../test_helper')
 
 module Formatter
 
   class CodeTest < ActiveSupport::TestCase
 
     def read_fixture(name, type)
-      filename = "#{RAILS_ROOT}/test/fixtures/formatter/code/#{name}.#{type}"
-      File.read(filename)
+      fixture_path = File.dirname(__FILE__) + '/../../fixtures'
+      File.read("#{fixture_path}/formatter/code/#{name}.#{type}")
     end
 
     context "An instance of the Formatter::Code class" do

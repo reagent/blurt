@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class MediaTest < ActiveSupport::TestCase
 
@@ -29,7 +29,7 @@ class MediaTest < ActiveSupport::TestCase
       end
 
       should "know the path to save files" do
-        Rails.stubs(:root).with().returns('/projects/blurt')
+        Blurt.stubs(:root).with().returns('/projects/blurt')
         Blurt.expects(:configuration).with().returns(stub(:upload_dir => 'uploads'))
         @media.expects(:subdirectory).with().returns('2009-08-01')
 
@@ -105,10 +105,7 @@ class MediaTest < ActiveSupport::TestCase
       should "be able to generate the struct representation of itself" do
         @media.stubs(:url).with().returns('url')
         
-        struct = @media.to_struct
-        
-        assert_equal true, struct.is_a?(Api::Struct::Media)
-        assert_equal 'url', struct['url']
+        assert_equal({:url => 'url'}, @media.to_struct)
       end
       
     end

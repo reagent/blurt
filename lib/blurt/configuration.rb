@@ -13,6 +13,7 @@ module Blurt
       @theme = Theme.new(theme_name, @root_path)
     end
     
+    # TODO: might not need to split this anymore
     def url=(url)
       @url = URI.parse(url)
     end
@@ -55,7 +56,7 @@ module Blurt
     
     def prepare_public_directory!
       self.create_upload_directory!
-      
+
       self.public_files.each {|f| FileUtils.rm_rf(f) }
       self.asset_files.each {|path, link_name| File.symlink(path, "#{self.public_path}/#{link_name}") }
     end

@@ -1,8 +1,8 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class PostTest < ActiveSupport::TestCase
 
-  should_require_attributes :title, :body
+  should_validate_presence_of :title, :body
   
   should_have_many :taggings
   should_have_many :tags
@@ -91,8 +91,29 @@ class PostTest < ActiveSupport::TestCase
     end
     
     should "be able to generate its own permalink" do
-      @post.expects(:permalink_url).with(@post).returns('permalink')
-      assert_equal 'permalink', @post.permalink
+      Blurt.stubs(:configuration).with().returns(stub(:url => URI.parse('http://localhost/')))
+      @post.stubs(:to_param).with().returns('slug')
+
+      assert_equal 'http://localhost/slug', @post.permalink
+    end
+    
+    should "be able to generate a struct representation of itself" do
+      post = Factory.build(:post, :title => 'Post', :body => 'body')
+      post.tags.build(:name => 'Tag')
+
+      post.save
+      post.stubs(:permalink).with().returns('permalink')
+
+      expected = {
+        :postid      => post.id.to_s,
+        :title       => 'Post',
+        :categories  => ['Tag'],
+        :permaLink   => 'permalink',
+        :description => 'body',
+        :dateCreated => post.created_at
+      }
+      
+      assert_equal expected, post.to_struct
     end
     
     context "with a list of assigned tag names" do

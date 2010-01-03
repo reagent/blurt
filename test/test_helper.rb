@@ -1,45 +1,77 @@
-ENV["RAILS_ENV"] = "test"
-
 $:.reject! { |e| e.include? 'TextMate' }
 
-require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
-require 'test_help'
+ROOT = File.expand_path(File.dirname(__FILE__) + '/..')
+$:.unshift(ROOT)
 
+
+require 'rubygems'
+require 'activerecord'
+require 'active_support/test_case'
+
+require 'test/unit'
+
+require 'shoulda/rails'
 require 'factory_girl'
+
+require 'BlueCloth'
+require 'hpricot'
+
+require 'xmlrpc/marshal'
+
+gem 'coderay', '= 0.7.4.215'
+require 'coderay'
+
 require 'mocha'
-require "#{RAILS_ROOT}/test/factories"
+require "#{ROOT}/test/factories"
 
-class Test::Unit::TestCase
-  # Transactional fixtures accelerate your tests by wrapping each test method
-  # in a transaction that's rolled back on completion.  This ensures that the
-  # test database remains unchanged so your fixtures don't have to be reloaded
-  # between every test method.  Fewer database queries means faster tests.
-  #
-  # Read Mike Clark's excellent walkthrough at
-  #   http://clarkware.com/cgi/blosxom/2005/10/24#Rails10FastTesting
-  #
-  # Every Active Record database supports transactions except MyISAM tables
-  # in MySQL.  Turn off transactional fixtures in this case; however, if you
-  # don't care one way or the other, switching from MyISAM to InnoDB tables
-  # is recommended.
-  #
-  # The only drawback to using transactional fixtures is when you actually 
-  # need to test transactions.  Since your test is bracketed by a transaction,
-  # any transactions started in your code will be automatically rolled back.
-  self.use_transactional_fixtures = true
+require 'lib/formatter/code'
+require 'lib/core_ext/nil_class'
+require 'lib/core_ext/string'
+require 'lib/sluggable'
+require 'lib/blurt'
+require 'lib/blurt/request_handler'
+require 'lib/blurt/service'
+require 'lib/blurt/configuration'
+require 'lib/blurt/theme'
+require 'lib/title'
 
-  # Instantiated fixtures are slow, but give you @david where otherwise you
-  # would need people(:david).  If you don't want to migrate your existing
-  # test cases which use the @david style and don't mind the speed hit (each
-  # instantiated fixtures translates to a database query per test method),
-  # then set this back to true.
-  self.use_instantiated_fixtures  = false
+require 'models/tag'
+require 'models/tagging'
+require 'models/media'
+require 'models/paginated_post'
+require 'models/post'
+require 'models/sitemap'
 
-  # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
-  #
-  # Note: You'll currently still have to declare fixtures explicitly in integration tests
-  # -- they do not yet inherit this setting
-  # fixtures :all
+# config/
+# models/
+# lib/
+# views/
+# helpers/
+# db/
+# log/
+# test/
+# application.rb
+# blurt.rb
 
-  # Add more helper methods to be used by all tests here...
+database_config = YAML.load_file("#{ROOT}/config/database.yml")
+ActiveRecord::Base.establish_connection(database_config['test'])
+
+class ActiveSupport::TestCase
+
+  setup :begin_transaction
+  teardown :rollback_transaction
+
+  def begin_transaction
+    ActiveRecord::Base.connection.increment_open_transactions
+    ActiveRecord::Base.connection.transaction_joinable = false
+    ActiveRecord::Base.connection.begin_db_transaction
+  end
+  
+  def rollback_transaction
+    ActiveRecord::Base.connection.rollback_db_transaction
+    ActiveRecord::Base.connection.decrement_open_transactions
+
+    ActiveRecord::Base.clear_active_connections!
+  end
+
 end

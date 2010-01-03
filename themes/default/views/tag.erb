@@ -1,0 +1,3 @@
+<% @tag.posts.each do |post| %>
+  <%= erb :'_post', :layout => false, :locals => {:post => post} %>
+<% end %>

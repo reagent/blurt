@@ -1,5 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require 'blurt'
+require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class BlurtTest < ActiveSupport::TestCase
   
@@ -8,15 +7,20 @@ class BlurtTest < ActiveSupport::TestCase
     # Clear the value in configuration (since it's memoized)
     setup { Blurt.instance_variable_set(:@configuration, nil) }
 
+    should "know the root directory" do
+      path = File.expand_path(File.dirname(__FILE__) + '/../..')
+      assert_equal path, Blurt.root.to_s
+    end
+
     should "have a configuration reader" do
       config = stub()
-      Blurt::Configuration.expects(:new).with(Rails.root).returns(config)
+      Blurt::Configuration.expects(:new).with(Blurt.root).returns(config)
       
       assert_equal config, Blurt.configuration
     end
     
     should "memoize the configuration instance" do
-      Blurt::Configuration.expects(:new).with(Rails.root).once.returns(stub())
+      Blurt::Configuration.expects(:new).with(Blurt.root).once.returns(stub())
       2.times { Blurt.configuration }
     end
     
@@ -29,7 +33,7 @@ class BlurtTest < ActiveSupport::TestCase
         m.stubs(:prepare_public_directory!)
       end
       
-      Blurt::Configuration.expects(:new).with(Rails.root).returns(configuration)
+      Blurt::Configuration.expects(:new).with(Blurt.root).returns(configuration)
       
       Blurt.setup {|config| config.theme = theme_name }
     end
