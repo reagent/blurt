@@ -83,21 +83,21 @@ class Sinatra::Application
   
 end
 
-get '/uploads/*' do
-  path_with_filename = params[:splat].join('/')
-  full_path          = "#{Blurt.configuration.upload_path}/#{path_with_filename}"
-
+get '/uploads/*' do |path_to_file|
+  full_path          = "#{Blurt.configuration.upload_path}/#{path_to_file}"
   send_file full_path, :disposition => nil
 end
 
 get '/feed' do
-  headers['Content-Type'] = 'application/xml'
+  content_type 'application/xml'
+
   @posts = Post.for_page(1)
   builder :posts
 end
 
 get '/sitemap.xml' do
-  headers['Content-Type'] = 'text/xml'
+  content_type 'text/xml'
+  
   sitemap = Sitemap.new
   sitemap.to_xml
 end
@@ -129,7 +129,7 @@ get '/' do
 end
 
 post '/admin' do
-  headers['Content-Type'] = 'text/xml'
+  content_type 'text/xml'
   
   handler = Blurt::RequestHandler.new(request.body.read)
   handler.response
