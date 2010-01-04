@@ -3,22 +3,18 @@ module Blurt
 
     class AuthenticationError < StandardError; end
     
+    attr_reader :username, :password, :parameters
+    
     def initialize(method_name, *parameters)
       @method_name = method_name
       @parameters  = parameters
     end
     
-    def username
-      @parameters[1]
+    def extract_credentials
+      @username, @password = @parameters.slice!(1, 2)
     end
     
-    def password
-      @parameters[2]
-    end
-    
-    def newPost
-      struct = @parameters[3]
-      
+    def newPost(blog_id, struct, publish_flag)
       post = Post.create!(
         :title     => struct['title'],
         :body      => struct['description'],
@@ -27,15 +23,11 @@ module Blurt
       post.id.to_s
     end
     
-    def getPost
-      id = @parameters[0]
+    def getPost(id)
       Post.find(id).to_struct
     end
     
-    def editPost
-      id     = @parameters[0]
-      struct = @parameters[3]
-      
+    def editPost(id, struct, publish_flag)
       post = Post.find(id)
       post.update_attributes(
         :title     => struct['title'],
@@ -44,32 +36,31 @@ module Blurt
       )
     end
     
-    def getRecentPosts
-      limit = @parameters[3]
+    def getRecentPosts(blog_id, limit)
       Post.by_date.with_limit(limit).map {|p| p.to_struct }
     end
     
-    def getCategories
+    def getCategories(blog_id)
       Tag.by_name.map {|t| t.to_struct }
     end
     
-    def newMediaObject
-      media_struct = @parameters[3]
-      media = Media.new(media_struct)
+    def newMediaObject(blog_id, struct)
+      media = Media.new(struct)
       media.save!
       
       media.to_struct
     end
     
-    def authenticate
+    def authenticate(username, password)
       unless username == Blurt.configuration.username && password == Blurt.configuration.password
         raise AuthenticationError, "User #{username} failed to authenticate"
       end
     end
     
     def call
-      authenticate
-      self.send(@method_name)
+      extract_credentials
+      authenticate(username, password)
+      send(@method_name, *parameters)
     end
     
   end

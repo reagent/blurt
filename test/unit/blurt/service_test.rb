@@ -5,30 +5,30 @@ module Blurt
     
     context "An instance of the Service class" do
       
-      should "know the username" do
-        service = Service.new('newPost', '0', 'username')
+      should "be able to extract the username and password from the parameters" do
+        service = Service.new('newPost', '0', 'username', 'password', 'other')
+        service.extract_credentials
+        
         assert_equal 'username', service.username
-      end
-      
-      should "know the password" do
-        service = Service.new('newPost', '0', 'username', 'password')
         assert_equal 'password', service.password
+        
+        assert_equal ['0', 'other'], service.parameters
       end
       
       should "raise an exception when attempting to authenticate a user whose credentials are incorrect" do
         Blurt.stubs(:configuration).with().returns(stub(:username => 'admin', :password => 'secret'))
         
-        service = Service.new('newPost', '0', 'username', 'password')
+        service = Service.new('newPost')
         assert_raises(Blurt::Service::AuthenticationError) do
-          service.authenticate
+          service.authenticate('username', 'password')
         end
       end
       
       should "not raise an exception when attempting to authenticate a user with matching credentials" do
         Blurt.stubs(:configuration).with().returns(stub(:username => 'username', :password => 'password'))
         
-        service = Service.new('newPost', '0', 'username', 'password')
-        assert_nothing_raised { service.authenticate }
+        service = Service.new('newPost')
+        assert_nothing_raised { service.authenticate('username', 'password') }
       end
       
       should "be able to create a new post" do
@@ -42,31 +42,31 @@ module Blurt
         
         Post.expects(:create!).with(:title => 'title', :body => 'body', :tag_names => ['One', 'Two']).returns(post)
         
-        service = Service.new('newPost', '0', 'username', 'password', post_struct, true)
+        service = Service.new('newPost')
         
-        assert_equal '1', service.newPost
+        assert_equal '1', service.newPost('0', post_struct, true)
       end
       
       should "be able to retrieve an existing post" do
         post = stub(:to_struct => 'struct')
         Post.expects(:find).with('1').returns(post)
         
-        service = Service.new('getPost', '1', 'username', 'password')
+        service = Service.new('getPost')
         
-        assert_equal 'struct', service.getPost
+        assert_equal 'struct', service.getPost('1')
       end
       
       should "be able to edit an existing post" do
         post = Factory(:post, :title => 'title', :body => 'body', :tag_names => ['one'])
         
-        params = {
+        post_struct = {
           'title'       => 'new title',
           'description' => 'new body',
           'categories'  => ['two']
         }
         
-        service = Service.new('editPost', post.id.to_s, 'username', 'password', params, true)
-        service.editPost
+        service = Service.new('editPost')
+        service.editPost(post.id.to_s, post_struct, true)
         
         post = Post.find(post.id)
         
@@ -85,8 +85,8 @@ module Blurt
           {:description => 'B', :htmlUrl => '', :rssUrl => ''},
         ]
         
-        service = Service.new('0', 'username', 'password')
-        assert_equal expected, service.getCategories
+        service = Service.new('getCategories')
+        assert_equal expected, service.getCategories('0')
       end
       
       should "be able to retrieve a list of the recent posts" do
@@ -100,8 +100,8 @@ module Blurt
         
         Post.stubs(:by_date).with().returns(finder_mock)
         
-        service = Service.new('getRecentPosts', '0', 'username', 'password', 2)
-        assert_equal ['struct_2', 'struct_1'], service.getRecentPosts
+        service = Service.new('getRecentPosts')
+        assert_equal ['struct_2', 'struct_1'], service.getRecentPosts('0', 2)
       end
       
       should "be able to handle a file upload" do
@@ -112,14 +112,14 @@ module Blurt
         
         Media.expects(:new).with('struct').returns(media_mock)
         
-        service = Service.new('newMediaObject', '0', 'username', 'password', 'struct')
-        assert_equal 'media_struct', service.newMediaObject
+        service = Service.new('newMediaObject')
+        assert_equal 'media_struct', service.newMediaObject('0', 'struct')
       end
       
       should "be able to dispatch to the appropriate method with authentication" do
         service = Service.new('newPost', '0', 'username', 'password', {'title' => 'foo'}, true)
-        service.expects(:authenticate)
-        service.expects(:newPost).with().returns('1')
+        service.expects(:authenticate).with('username', 'password')
+        service.expects(:newPost).with('0', {'title' => 'foo'}, true).returns('1')
         
         assert_equal '1', service.call
       end
