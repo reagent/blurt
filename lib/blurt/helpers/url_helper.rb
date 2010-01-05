@@ -8,27 +8,32 @@ module Blurt
       end
       
       def feed_url
-        "#{root_url}feed"
+        url_for('feed')
       end
       
       def sitemap_url
-        "#{root_url}sitemap.xml"
+        url_for('sitemap.xml')
       end
       
       def tags_url
-        "#{root_url}tags"
+        url_for('tags')
       end
       
       def tag_url(tag)
-        "#{root_url}tag/#{tag.slug}"
+        url_for("tag/#{tag.slug}")
       end
       
       def post_url(post)
-        "#{root_url}#{post.slug}"
+        url_for(post.slug)
       end
       
       def page_url(page_number)
-        "#{root_url}page/#{page_number}"
+        url_for("page/#{page_number}")
+      end
+      
+      private
+      def url_for(path)
+        root_url + path
       end
       
     end
