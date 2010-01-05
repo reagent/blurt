@@ -3,7 +3,7 @@ xml.rss :version => "2.0" do
   xml.channel do
     xml.title Blurt.configuration.name
     xml.description Blurt.configuration.tagline unless Blurt.configuration.tagline.blank?
-    xml.link 'root_url'
+    xml.link root_url
     
     @posts.each do |post|
       xml.item do

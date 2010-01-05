@@ -23,7 +23,9 @@ require 'lib/blurt/request_handler'
 require 'lib/blurt/service'
 require 'lib/blurt/configuration'
 require 'lib/blurt/theme'
+require 'lib/blurt/helpers/url_helper'
 require 'lib/title'
+
 
 require 'models/tag'
 require 'models/tagging'
@@ -73,6 +75,8 @@ module Blurt
     def title
       @title ||= Title.new
     end
+
+    include Blurt::Helpers::UrlHelper
 
     helpers do
       include Rack::Utils

@@ -7,7 +7,7 @@ class SitemapTest < ActiveSupport::TestCase
     setup { @sitemap = Sitemap.new }
     
     should "have a :root element" do
-      # @sitemap.expects(:root_url).with().returns('root_url')
+      @sitemap.expects(:root_url).with().returns('root_url')
       ::Post.expects(:maximum).with(:updated_at).returns('max')
       
       root = stub()
@@ -43,7 +43,7 @@ class SitemapTest < ActiveSupport::TestCase
       time = Time.parse('2009-08-01 00:00:00')
       
       Tag.expects(:maximum).with(:updated_at).returns(time)
-      # @sitemap.expects(:tags_url).with().returns('tags_url')
+      @sitemap.expects(:tags_url).with().returns('tags_url')
       
       Sitemap::Element.expects(:new).with(:location => 'tags_url', :modified_at => time).returns(element)
       
@@ -161,7 +161,7 @@ class SitemapTest < ActiveSupport::TestCase
   context "An instance of the Sitemap::Page class" do
     should "determine the location and modified_at from a page number and post data" do
       ::Post.expects(:maximum).with(:updated_at).returns(Time.parse('2009-08-01 00:00:00'))
-      # Sitemap::Page.any_instance.expects(:posts_url).with(1).returns('posts_url')
+      Sitemap::Page.any_instance.expects(:posts_url).with(1).returns('posts_url')
       
       page = Sitemap::Page.new(1)
       

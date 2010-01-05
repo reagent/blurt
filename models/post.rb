@@ -1,7 +1,7 @@
 class Post < ActiveRecord::Base
   
   include Sluggable
-  # include ActionController::UrlWriter
+  include Blurt::Helpers::UrlHelper
   
   slug_column :title
   
@@ -44,7 +44,7 @@ class Post < ActiveRecord::Base
   end
   
   def permalink
-    Blurt.configuration.url.to_s + to_param
+    post_url(self)
   end
   
   def to_struct

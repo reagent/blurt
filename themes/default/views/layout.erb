@@ -6,12 +6,12 @@
   <title><%= title %></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link href="/stylesheets/blurt.css" media="screen" rel="stylesheet" type="text/css" />
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="/feed" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="<%= feed_url %>" />
 </head>
 <body>
   <div id="main">
     <div id="header">
-      <%= link_to 'blurt. rhymes with dirt.', '#' %>
+      <%= link_to 'blurt. rhymes with dirt.', root_url %>
     </div>
     <%= yield %>
     <div id="footer">

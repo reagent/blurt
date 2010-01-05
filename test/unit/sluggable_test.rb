@@ -49,12 +49,6 @@ class SluggableImplementationTest < ActiveSupport::TestCase
       @sluggable.stubs(:id).returns(@id)
     end
     
-    should "define the value in slug returned when converting to_param" do
-      param = 'blah'
-      @sluggable.expects(:slug).with().returns(param)
-      assert_equal param, @sluggable.to_param
-    end
-    
     should "know the next available slug when the original is taken" do
       stub_others_by_slug(@id, 'title', 'title-2')
       assert_equal "title-2", @sluggable.send(:next_available_slug, 'title')

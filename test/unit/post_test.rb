@@ -85,16 +85,9 @@ class PostTest < ActiveSupport::TestCase
       @post.valid?
     end
     
-    should "expose the slug as the URL parameter" do
-      @post.stubs(:slug).returns('foo')
-      assert_equal 'foo', @post.to_param
-    end
-    
     should "be able to generate its own permalink" do
-      Blurt.stubs(:configuration).with().returns(stub(:url => URI.parse('http://localhost/')))
-      @post.stubs(:to_param).with().returns('slug')
-
-      assert_equal 'http://localhost/slug', @post.permalink
+      @post.stubs(:post_url).with(@post).returns('permalink')
+      assert_equal 'permalink', @post.permalink
     end
     
     should "be able to generate a struct representation of itself" do

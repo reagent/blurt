@@ -1,6 +1,7 @@
 class Tag < ActiveRecord::Base
   
   include Sluggable
+  include Blurt::Helpers::UrlHelper
   
   slug_column :name
   
@@ -14,9 +15,8 @@ class Tag < ActiveRecord::Base
   
   named_scope :by_name, :order => 'tags.name ASC'
   
-  # TODO: this is duplicated from Post#permalink
   def permalink
-    Blurt.configuration.url.to_s + 'tag/' + to_param
+    tag_url(self)
   end
   
   def to_struct

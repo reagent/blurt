@@ -16,10 +16,6 @@ module Sluggable
   
   module InstanceMethods
     
-    def to_param
-      self.slug
-    end
-    
     def next_available_slug(base_slug)
       valid_slug = base_slug
 

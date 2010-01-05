@@ -1,7 +1,9 @@
 class Sitemap
+
+  include Blurt::Helpers::UrlHelper
   
   def root
-    @root ||= Element.new(:location => 'root_url', :modified_at => ::Post.maximum(:updated_at))
+    @root ||= Element.new(:location => root_url, :modified_at => ::Post.maximum(:updated_at))
   end
 
   def pages
@@ -13,7 +15,7 @@ class Sitemap
   end
   
   def tag_list
-    @tag_list ||= Element.new(:location => 'tags_url', :modified_at => ::Tag.maximum(:updated_at))
+    @tag_list ||= Element.new(:location => tags_url, :modified_at => ::Tag.maximum(:updated_at))
   end
   
   def tags
@@ -105,7 +107,7 @@ class Sitemap
   class Page < Element
    
     def initialize(page_number)
-      super :location => 'posts_url(page_number)', 
+      super :location => posts_url(page_number),
             :modified_at => ::Post.maximum(:updated_at)
     end
     

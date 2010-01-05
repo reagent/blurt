@@ -16,11 +16,9 @@ class TagTest < ActiveSupport::TestCase
     
     should "be able to generate its own permalink" do
       tag = Tag.new
-      
-      Blurt.stubs(:configuration).with().returns(stub(:url => URI.parse('http://localhost/')))
-      tag.stubs(:to_param).with().returns('slug')
+      tag.stubs(:tag_url).with(tag).returns('permalink')
 
-      assert_equal 'http://localhost/tag/slug', tag.permalink
+      assert_equal 'permalink', tag.permalink
     end
     
     should "be able to generate a struct representation of itself" do

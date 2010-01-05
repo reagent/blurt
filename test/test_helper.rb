@@ -33,6 +33,7 @@ require 'lib/blurt/request_handler'
 require 'lib/blurt/service'
 require 'lib/blurt/configuration'
 require 'lib/blurt/theme'
+require 'lib/blurt/helpers/url_helper'
 require 'lib/title'
 
 require 'models/tag'
