@@ -33,7 +33,7 @@ class MediaTest < ActiveSupport::TestCase
         Blurt.expects(:configuration).with().returns(stub(:upload_dir => 'uploads'))
         @media.expects(:subdirectory).with().returns('2009-08-01')
 
-        assert_equal '/projects/blurt/public/uploads/2009-08-01', @media.path
+        assert_equal '/projects/blurt/uploads/2009-08-01', @media.path
       end
       
       should "create the upload path" do

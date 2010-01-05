@@ -19,7 +19,7 @@ class Media
   end
 
   def path
-    full_upload_dir = "#{Blurt.root}/public/#{Blurt.configuration.upload_dir}"
+    full_upload_dir = "#{Blurt.root}/#{Blurt.configuration.upload_dir}"
     "#{full_upload_dir}/#{self.subdirectory}"
   end
 
