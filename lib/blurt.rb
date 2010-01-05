@@ -1,13 +1,7 @@
-require 'BlueCloth'
-require 'hpricot'
-
-require 'activerecord'
-require 'activesupport'
+require File.dirname(__FILE__) + '/../vendor/gems/environment'
+Bundler.require_env
 
 require 'xmlrpc/marshal'
-
-gem 'coderay', '= 0.7.4.215'
-require 'coderay'
 
 require 'lib/core_ext'
 require 'lib/title'
