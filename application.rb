@@ -57,7 +57,7 @@ Blurt.setup do |config|
   # The URL for this blog - this will be used to generate permalinks
   config.url         = 'http://localhost:4567/'
   
-  config.upload_dir = 'uploads'
+  # config.upload_dir = 'uploads'
   
   # The username / password to post to this blog
   config.credentials = 'user:asdf'

@@ -1,3 +1,4 @@
+/uploads
 /config/database.yml
 /config/blurt.yml
 /config/blurt_setup.rb

@@ -12,7 +12,7 @@ module Blurt
   def self.setup(&block)
     configuration = self.configuration
     yield configuration
-    configuration.prepare_public_directory!
+    configuration.create_upload_directory
   end
   
 end

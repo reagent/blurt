@@ -30,7 +30,7 @@ class BlurtTest < ActiveSupport::TestCase
       
       configuration = mock do |m|
         m.expects(:theme=).with(theme_name).returns(theme)
-        m.stubs(:prepare_public_directory!)
+        m.stubs(:create_upload_directory)
       end
       
       Blurt::Configuration.expects(:new).with(Blurt.root).returns(configuration)
@@ -41,7 +41,7 @@ class BlurtTest < ActiveSupport::TestCase
     should "move asset files as part of setup" do
       configuration = mock do |m| 
         m.expects(:name=).with('sneaq')
-        m.expects(:prepare_public_directory!).with()
+        m.expects(:create_upload_directory).with()
       end
       
       Blurt.stubs(:configuration).with().returns(configuration)
