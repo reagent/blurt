@@ -14,12 +14,7 @@ require 'lib/blurt/configuration'
 require 'lib/blurt/theme'
 require 'lib/blurt/helpers'
 
-require 'models/tag'
-require 'models/tagging'
-require 'models/media'
-require 'models/paginated_post'
-require 'models/post'
-require 'models/sitemap'
+require 'lib/models'
 
 module Blurt
   
