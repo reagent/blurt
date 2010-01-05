@@ -1,10 +1,6 @@
 /uploads
-/config/database.yml
-/config/blurt.yml
-/config/blurt_setup.rb
+/config/setup.rb
 /tmp/*
 /test/fixtures/*.yml
 /log/*
-/public/*
-/app/views/*
 /db/*.sqlite3

@@ -1,8 +1,7 @@
 $:.reject! { |e| e.include? 'TextMate' }
 
-ROOT = File.expand_path(File.dirname(__FILE__) + '/..')
-$:.unshift(ROOT)
-
+root_path = File.expand_path(File.dirname(__FILE__) + '/..')
+$:.unshift(root_path)
 
 require 'rubygems'
 require 'activerecord'
@@ -14,50 +13,17 @@ require 'test/unit'
 require 'shoulda/rails'
 require 'factory_girl'
 
-require 'BlueCloth'
-require 'hpricot'
-
-require 'xmlrpc/marshal'
-
-gem 'coderay', '= 0.7.4.215'
-require 'coderay'
-
 require 'mocha'
-require "#{ROOT}/test/factories"
+require "test/factories"
 
-require 'lib/blurt/formatter'
-require 'lib/core_ext/nil_class'
-require 'lib/core_ext/string'
-require 'lib/sluggable'
 require 'lib/blurt'
-require 'lib/blurt/request_handler'
-require 'lib/blurt/service'
-require 'lib/blurt/configuration'
-require 'lib/blurt/theme'
-require 'lib/blurt/helpers/url_helper'
-require 'lib/blurt/helpers/link_helper'
-require 'lib/title'
 
-require 'models/tag'
-require 'models/tagging'
-require 'models/media'
-require 'models/paginated_post'
-require 'models/post'
-require 'models/sitemap'
-
-# config/
-# models/
-# lib/
-# views/
-# helpers/
-# db/
-# log/
-# test/
-# application.rb
-# blurt.rb
-
-database_config = YAML.load_file("#{ROOT}/config/database.yml")
-ActiveRecord::Base.establish_connection(database_config['test'])
+ActiveRecord::Base.establish_connection(
+  :adapter  => 'mysql',
+  :username => 'root',
+  :password => '',
+  :database => 'blurt_test'
+)
 
 class ActiveSupport::TestCase
 

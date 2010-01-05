@@ -1,3 +1,32 @@
+require 'BlueCloth'
+require 'hpricot'
+
+require 'activerecord'
+require 'activesupport'
+
+require 'xmlrpc/marshal'
+
+gem 'coderay', '= 0.7.4.215'
+require 'coderay'
+
+require 'lib/core_ext'
+require 'lib/title'
+require 'lib/sluggable'
+
+require 'lib/blurt/formatter'
+require 'lib/blurt/request_handler'
+require 'lib/blurt/service'
+require 'lib/blurt/configuration'
+require 'lib/blurt/theme'
+require 'lib/blurt/helpers'
+
+require 'models/tag'
+require 'models/tagging'
+require 'models/media'
+require 'models/paginated_post'
+require 'models/post'
+require 'models/sitemap'
+
 module Blurt
   
   def self.root

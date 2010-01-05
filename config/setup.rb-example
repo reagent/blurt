@@ -1,6 +1,13 @@
-# Example blog configuration.  Copy this file to config/blurt_setup.rb
+# Example configuration.  Copy this file to config/setup.rb
 #
 Blurt.setup do |config|
+
+  config.connection = {
+    'adapter'  => 'mysql', 
+    'database' => 'blurt_development', 
+    'username' => 'root', 
+    'password' => ''
+  }
 
   # The name of your blog
   config.name        = 'my sweet blog'
@@ -19,8 +26,10 @@ Blurt.setup do |config|
   config.per_page    = 20
   
   # The URL for this blog - this will be used to generate permalinks
-  config.url         = 'http://localhost:3000/'
+  config.url         = 'http://localhost/'
+  
+  # config.upload_dir = 'uploads'
   
   # The username / password to post to this blog
-  config.credentials = 'user:fluffybunnies'
+  config.credentials = 'username:password'
 end
