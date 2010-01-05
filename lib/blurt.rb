@@ -12,7 +12,7 @@ module Blurt
   def self.setup(&block)
     configuration = self.configuration
     yield configuration
-    configuration.create_upload_directory
+    configuration.boot
   end
   
   def self.view_path

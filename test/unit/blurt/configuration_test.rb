@@ -10,6 +10,11 @@ module Blurt
         @configuration = Configuration.new(@root_path)
       end
       
+      should "have an accessor for :connection" do
+        @configuration.connection = 'foo'
+        assert_equal 'foo', @configuration.connection
+      end
+      
       should "have an accessor for :name" do
         @configuration.name = 'foo'
         assert_equal 'foo', @configuration.name
@@ -74,6 +79,20 @@ module Blurt
         FileUtils.expects(:mkdir).with(@configuration.upload_path).never
         
         @configuration.create_upload_directory
+      end
+      
+      should "be able to connect to the database" do
+        ActiveRecord::Base.expects(:establish_connection).with('foo')
+        
+        @configuration.connection = 'foo'
+        @configuration.connect_to_database
+      end
+      
+      should "be able to bootstrap the application" do
+        @configuration.expects(:create_upload_directory).with()
+        @configuration.expects(:connect_to_database)
+        
+        @configuration.boot
       end
       
     end

@@ -35,11 +35,13 @@ require 'models/paginated_post'
 require 'models/post'
 require 'models/sitemap'
 
-ActiveRecord::Base.establish_connection('adapter' => 'mysql', 'database' => 'blurt_development', 'username' => 'root', 'password' => '')
-
 # Example blog configuration.  Copy this file to config/blurt_setup.rb
 #
 Blurt.setup do |config|
+
+  config.connection = {
+    'adapter' => 'mysql', 'database' => 'blurt_development', 'username' => 'root', 'password' => ''
+  }
 
   # The name of your blog
   config.name        = 'my sweet blog'

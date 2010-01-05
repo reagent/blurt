@@ -1,7 +1,7 @@
 module Blurt
   class Configuration
     
-    attr_accessor :name, :tagline, :per_page
+    attr_accessor :name, :tagline, :per_page, :connection
     attr_writer   :upload_dir
     attr_reader   :theme, :url, :username, :password
     
@@ -32,6 +32,15 @@ module Blurt
   
     def create_upload_directory
       FileUtils.mkdir(self.upload_path) unless File.exist?(upload_path)
+    end
+    
+    def connect_to_database
+      ActiveRecord::Base.establish_connection(connection)
+    end
+    
+    def boot
+      create_upload_directory
+      connect_to_database
     end
 
   end

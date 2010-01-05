@@ -30,12 +30,22 @@ class BlurtTest < ActiveSupport::TestCase
       
       configuration = mock do |m|
         m.expects(:theme=).with(theme_name).returns(theme)
-        m.stubs(:create_upload_directory)
+        m.stubs(:boot)
       end
       
       Blurt::Configuration.expects(:new).with(Blurt.root).returns(configuration)
       
       Blurt.setup {|config| config.theme = theme_name }
+    end
+    
+    should "bootstrap the application when configuring" do
+      configuration = mock do |m|
+        m.expects(:boot).with()
+      end
+      
+      Blurt::Configuration.expects(:new).with(Blurt.root).returns(configuration)
+      
+      Blurt.setup {|config| 'foo' }
     end
     
     should "delegate the :view_path to the configured theme" do
