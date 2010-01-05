@@ -38,15 +38,18 @@ class BlurtTest < ActiveSupport::TestCase
       Blurt.setup {|config| config.theme = theme_name }
     end
     
-    should "move asset files as part of setup" do
-      configuration = mock do |m| 
-        m.expects(:name=).with('sneaq')
-        m.expects(:create_upload_directory).with()
-      end
+    should "delegate the :view_path to the configured theme" do
+      theme = stub(:view_path => 'view')
+      Blurt.stubs(:configuration).with().returns(stub(:theme => theme))
       
-      Blurt.stubs(:configuration).with().returns(configuration)
+      assert_equal 'view', Blurt.view_path
+    end
+    
+    should "delegate the :asset_path to the configured theme" do
+      theme = stub(:asset_path => 'asset')
+      Blurt.stubs(:configuration).with().returns(stub(:theme => theme))
       
-      Blurt.setup {|config| config.name = 'sneaq' }
+      assert_equal 'asset', Blurt.asset_path
     end
     
   end

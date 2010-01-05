@@ -15,4 +15,12 @@ module Blurt
     configuration.create_upload_directory
   end
   
+  def self.view_path
+    configuration.theme.view_path
+  end
+  
+  def self.asset_path
+    configuration.theme.asset_path
+  end
+  
 end

@@ -12,7 +12,7 @@ module Blurt
     end
     
     def path
-      @path ||= "#{@root_path}/app/themes/#{@name}"
+      @path ||= "#{@root_path}/themes/#{@name}"
     end
     
     def asset_path

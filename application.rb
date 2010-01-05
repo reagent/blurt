@@ -67,8 +67,8 @@ module Blurt
   class Application < Sinatra::Base
 
     enable :static
-    set :views, 'themes/default/views'
-    set :public, 'themes/default/assets'
+    set :views, Blurt.view_path
+    set :public, Blurt.asset_path
 
     def title
       @title ||= Title.new

@@ -31,7 +31,7 @@ module Blurt
       
       should "have a default theme" do
         assert_equal 'default', @configuration.theme.name
-        assert_equal "#{@root_path}/app/themes/default", @configuration.theme.path
+        assert_equal "#{@root_path}/themes/default", @configuration.theme.path
       end
       
       should "be able to set its theme" do

@@ -19,7 +19,7 @@ module Blurt
         end
 
         should "know the path to the theme" do
-          assert_equal "/root/app/themes/blip", @theme.path
+          assert_equal "/root/themes/blip", @theme.path
         end
         
         should "know the name of the theme" do
