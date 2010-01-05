@@ -3,7 +3,7 @@
   <div class="body"><%= post.content.to_html %></div>
   <div class="footer">
     <div class="tags">
-      Tags: <%# tag_links_for post %>
+      Tags: <%= tag_links_for(post) %>
     </div>
     <div class="posted">Posted: <%= post.created_at.to_s(:post)%></div>
   </div>

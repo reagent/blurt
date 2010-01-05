@@ -24,6 +24,7 @@ require 'lib/blurt/service'
 require 'lib/blurt/configuration'
 require 'lib/blurt/theme'
 require 'lib/blurt/helpers/url_helper'
+require 'lib/blurt/helpers/link_helper'
 require 'lib/title'
 
 
@@ -68,23 +69,14 @@ end
 module Blurt
   class Application < Sinatra::Base
 
+    include Blurt::Helpers::LinkHelper
+
     enable :static
     set :views, Blurt.view_path
     set :public, Blurt.asset_path
 
     def title
       @title ||= Title.new
-    end
-
-    include Blurt::Helpers::UrlHelper
-
-    helpers do
-      include Rack::Utils
-      alias_method :h, :escape_html
-
-      def link_to(content, url)
-        "<a href=\"#{url}\">#{h(content)}</a>"
-      end
     end
 
     get '/uploads/*' do |path_to_file|
