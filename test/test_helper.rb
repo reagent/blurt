@@ -25,7 +25,7 @@ require 'coderay'
 require 'mocha'
 require "#{ROOT}/test/factories"
 
-require 'lib/formatter/code'
+require 'lib/blurt/formatter'
 require 'lib/core_ext/nil_class'
 require 'lib/core_ext/string'
 require 'lib/sluggable'

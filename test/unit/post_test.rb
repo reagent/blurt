@@ -53,7 +53,7 @@ class PostTest < ActiveSupport::TestCase
       formatter = stub()
       
       @post.body = body
-      Formatter::Code.stubs(:new).with(body).returns(formatter)
+      Blurt::Formatter.stubs(:new).with(body).returns(formatter)
       
       assert_equal formatter, @post.content
     end

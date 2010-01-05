@@ -40,7 +40,7 @@ class Post < ActiveRecord::Base
   end
 
   def content
-    Formatter::Code.new(self.body)
+    Blurt::Formatter.new(self.body)
   end
   
   def permalink

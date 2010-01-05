@@ -1,6 +1,6 @@
-module Formatter
+module Blurt
   
-  class Code
+  class Formatter
     
     def initialize(content)
       @raw_content = content

@@ -14,7 +14,7 @@ require 'xmlrpc/marshal'
 gem 'coderay', '= 0.7.4.215'
 require 'coderay'
 
-require 'lib/formatter/code'
+require 'lib/blurt/formatter'
 require 'lib/core_ext/nil_class'
 require 'lib/core_ext/string'
 require 'lib/sluggable'
