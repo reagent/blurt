@@ -7,10 +7,10 @@ module Blurt
       
       should "be able to extract the username and password from the parameters" do
         service = Service.new('newPost', '0', 'username', 'password', 'other')
-        service.extract_credentials
+        username, password = service.extract_credentials
         
-        assert_equal 'username', service.username
-        assert_equal 'password', service.password
+        assert_equal 'username', username
+        assert_equal 'password', password
         
         assert_equal ['0', 'other'], service.parameters
       end

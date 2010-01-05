@@ -3,7 +3,7 @@ module Blurt
 
     class AuthenticationError < StandardError; end
     
-    attr_reader :username, :password, :parameters
+    attr_reader :parameters
     
     def initialize(method_name, *parameters)
       @method_name = method_name
@@ -11,7 +11,7 @@ module Blurt
     end
     
     def extract_credentials
-      @username, @password = @parameters.slice!(1, 2)
+      @parameters.slice!(1, 2)
     end
     
     def newPost(blog_id, struct, publish_flag)
@@ -58,7 +58,7 @@ module Blurt
     end
     
     def call
-      extract_credentials
+      username, password = extract_credentials
       authenticate(username, password)
       send(@method_name, *parameters)
     end
