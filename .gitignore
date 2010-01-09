@@ -1,5 +1,6 @@
 /uploads
 /config/setup.rb
+/config/setup_*.rb
 /tmp/*
 /test/fixtures/*.yml
 /log/*
