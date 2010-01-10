@@ -58,6 +58,25 @@ class PostTest < ActiveSupport::TestCase
       assert_equal formatter, @post.content
     end
     
+    should "be able to generate the RSS representation of itself" do
+      post = Post.new(:title => 'Title')
+      post.stubs(:content).with().returns(stub(:to_html => 'html'))
+      post.stubs(:created_at).with().returns(Time.parse('2009-08-01 00:00:00'))
+      post.stubs(:permalink).with().returns('permalink')
+      
+      expected = 
+        "<item>" +
+        "<title>Title</title>" +
+        "<description>html</description>" +
+        "<pubDate>Sat, 01 Aug 2009 00:00:00 -0400</pubDate>" +
+        "<link>permalink</link>" +
+        "<guid>permalink</guid>" +
+        "</item>"
+  
+      assert_equal expected, post.to_rss
+      
+    end
+    
     should "have a list of assigned tag names" do
       tag_names = ['tag']
       @post.tag_names = tag_names

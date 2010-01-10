@@ -47,6 +47,18 @@ class Post < ActiveRecord::Base
     post_url(self)
   end
   
+  def to_rss
+    xml = Builder::XmlMarkup.new
+    xml.item do
+      xml.title title
+      xml.description content.to_html
+      xml.pubDate created_at.to_s(:rfc822)
+      xml.link permalink
+      xml.guid permalink
+    end
+    xml.target!
+  end
+  
   def to_struct
     {
       :postid      => id.to_s,

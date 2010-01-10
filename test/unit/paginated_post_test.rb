@@ -91,6 +91,28 @@ class PaginatedPostTest < ActiveSupport::TestCase
       assert_equal [post], pp.posts
     end
     
+    should "be able to convert itself to an RSS format" do
+      Blurt.stubs(:configuration).with().returns(stub(:name => 'name', :tagline => 'tagline'))
+      
+      pp = PaginatedPost.new(:page => 1)
+      pp.stubs(:posts).with().returns([stub(:to_rss => 'element_one'), stub(:to_rss => 'element_two')])
+      pp.stubs(:root_url).with().returns('url')
+      
+      expected = 
+        '<?xml version="1.0" encoding="UTF-8"?>' +
+        '<rss version="2.0">' +
+        '<channel>' +
+        '<title>name</title>' +
+        '<description>tagline</description>' +
+        '<link>url</link>' +
+        'element_one' +
+        'element_two' +
+        '</channel>' +
+        '</rss>'
+
+      assert_equal expected, pp.to_rss
+    end
+    
   end
   
 end

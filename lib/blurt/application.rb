@@ -29,8 +29,7 @@ module Blurt
     get '/feed' do
       content_type 'application/xml'
 
-      @posts = Post.for_page(1)
-      builder :posts
+      @posts = Post.for_page(1).to_rss
     end
 
     get '/sitemap.xml' do
