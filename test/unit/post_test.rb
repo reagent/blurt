@@ -64,14 +64,15 @@ class PostTest < ActiveSupport::TestCase
       post.stubs(:created_at).with().returns(Time.parse('2009-08-01 00:00:00'))
       post.stubs(:permalink).with().returns('permalink')
       
-      expected = 
-        "<item>" +
-        "<title>Title</title>" +
-        "<description>html</description>" +
-        "<pubDate>Sat, 01 Aug 2009 00:00:00 -0400</pubDate>" +
-        "<link>permalink</link>" +
-        "<guid>permalink</guid>" +
-        "</item>"
+      expected = <<-RSS
+    <item>
+      <title>Title</title>
+      <description>html</description>
+      <pubDate>Sat, 01 Aug 2009 00:00:00 -0400</pubDate>
+      <link>permalink</link>
+      <guid>permalink</guid>
+    </item>
+      RSS
   
       assert_equal expected, post.to_rss
       

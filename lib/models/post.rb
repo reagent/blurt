@@ -48,7 +48,7 @@ class Post < ActiveRecord::Base
   end
   
   def to_rss
-    xml = Builder::XmlMarkup.new
+    xml = Builder::XmlMarkup.new(:indent => 2, :margin => 2)
     xml.item do
       xml.title title
       xml.description content.to_html

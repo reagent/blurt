@@ -43,7 +43,7 @@ class PaginatedPost
   end
   
   def to_rss
-    rss = Builder::XmlMarkup.new
+    rss = Builder::XmlMarkup.new(:indent => 2)
     rss.instruct! :xml, :version => "1.0" 
     rss.rss :version => "2.0" do
       rss.channel do
