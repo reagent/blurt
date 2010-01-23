@@ -18,6 +18,10 @@ require 'lib/models'
 
 module Blurt
   
+  def self.env
+    ENV['RACK_ENV'] || 'development'
+  end
+  
   def self.root
     relative_path = File.dirname(__FILE__) + '/..'
     Pathname.new(File.expand_path(relative_path))

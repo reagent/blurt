@@ -22,6 +22,23 @@ module Blurt
       @username, @password = credentials.split(':')
     end
     
+    def environment_file
+      "#{Blurt.root}/config/setup/#{Blurt.env}.rb"
+    end
+    
+    def read_environment_file
+      File.exist?(environment_file) ? IO.read(environment_file) : nil
+    end
+    
+    def load_environment
+      environment_contents = read_environment_file
+
+      unless environment_contents.nil?
+        config = self
+        eval read_environment_file, binding
+      end
+    end
+    
     def upload_dir
       @upload_dir ||= 'uploads'
     end
@@ -39,6 +56,7 @@ module Blurt
     end
     
     def boot
+      load_environment
       create_upload_directory
       connect_to_database
     end

@@ -3,9 +3,25 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 class BlurtTest < ActiveSupport::TestCase
   
   context "The Blurt module" do
+    
+    setup do
+      # Clear the value in configuration (since it's memoized)
+      Blurt.instance_variable_set(:@configuration, nil)
+      
+      @rack_env = ENV['RACK_ENV']
+    end
+    
+    teardown { ENV['RACK_ENV'] = @rack_env }
 
-    # Clear the value in configuration (since it's memoized)
-    setup { Blurt.instance_variable_set(:@configuration, nil) }
+    should "defautl the environment to 'development' if it is not set" do
+      ENV['RACK_ENV'] = nil
+      assert_equal 'development', Blurt.env
+    end
+    
+    should "know the environment if it is set" do
+      ENV['RACK_ENV'] = 'production'
+      assert_equal 'production', Blurt.env
+    end
 
     should "know the root directory" do
       path = File.expand_path(File.dirname(__FILE__) + '/../..')

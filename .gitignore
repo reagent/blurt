@@ -1,9 +1,9 @@
 /uploads
 /config/setup.rb
-/config/setup_*.rb
 /tmp/*
 /public/*
 /log/*
 /db/*.sqlite3
 /vendor/gems/*/*/gems
 /vendor/gems/*/*/specifications
+/config/setup/*.rb

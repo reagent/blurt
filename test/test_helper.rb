@@ -1,29 +1,22 @@
 $:.reject! { |e| e.include? 'TextMate' }
 
+ENV['RACK_ENV'] = 'test'
+
 root_path = File.expand_path(File.dirname(__FILE__) + '/..')
 $:.unshift(root_path)
 
 require 'rubygems'
-require 'activerecord'
 require 'active_support/test_case'
 require 'rack'
 
 require 'test/unit'
+require 'mocha'
+require 'factory_girl'
+require 'test/factories'
+
+require 'config/setup'
 
 require 'shoulda/rails'
-require 'factory_girl'
-
-require 'mocha'
-require "test/factories"
-
-require 'lib/blurt'
-
-ActiveRecord::Base.establish_connection(
-  :adapter  => 'mysql',
-  :username => 'root',
-  :password => '',
-  :database => 'blurt_test'
-)
 
 class ActiveSupport::TestCase
 

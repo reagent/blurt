@@ -1,6 +1,3 @@
-require 'sinatra/base'
-require 'lib/blurt'
-
 begin
   require 'config/setup.rb'
 rescue LoadError

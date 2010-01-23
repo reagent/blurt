@@ -59,6 +59,51 @@ module Blurt
         assert_equal 'password', @configuration.password
       end
       
+      should "know the path to the environment file that needs to be loaded" do
+        Blurt.stubs(:root).with().returns('/blurt')
+        Blurt.stubs(:env).with().returns('development')
+        
+        assert_equal '/blurt/config/setup/development.rb', @configuration.environment_file
+      end
+      
+      should "be able to read the environment file" do
+        file = Tempfile.new(self.class)
+        file.write('blip')
+        file.close
+        
+        @configuration.stubs(:environment_file).with().returns(file.path)
+        
+        assert_equal 'blip', @configuration.read_environment_file
+      end
+      
+      should "return nil when reading the environment file if it does not exist" do
+        file = Tempfile.new(self.class)
+        file.close
+        
+        missing_file_path = file.path
+        file.unlink
+        
+        @configuration.stubs(:environment_file).with().returns(missing_file_path)
+        
+        assert_nil @configuration.read_environment_file
+      end
+      
+      should "be able to evaluate the environment file" do
+        @configuration.name = 'original'
+        @configuration.stubs(:read_environment_file).with().returns("config.name = 'new'")
+        
+        @configuration.load_environment
+        
+        assert_equal 'new', @configuration.name
+      end
+      
+      should "not evaluate the environment file if there is no data in it" do
+        @configuration.stubs(:read_environment_file).with().returns(nil)
+        @configuration.expects(:eval).never
+        
+        @configuration.load_environment
+      end
+      
       should "know the full upload path" do
         @configuration.upload_dir = 'uploads'
         
@@ -89,6 +134,7 @@ module Blurt
       end
       
       should "be able to bootstrap the application" do
+        @configuration.expects(:load_environment).with()
         @configuration.expects(:create_upload_directory).with()
         @configuration.expects(:connect_to_database)
         

@@ -8,14 +8,13 @@ Rake::TestTask.new do |t|
 end
 
 def load_environment(environment)
-  suffix = "_#{environment}" if environment
+  ENV['RACK_ENV'] = environment
   
   begin
-    require File.dirname(__FILE__) + '/lib/blurt'
-    require "#{Blurt.root}/config/setup#{suffix}"
+    require File.join(File.dirname(__FILE__), 'config', 'setup')
     ActiveRecord::Base.logger = Logger.new(STDOUT)
   rescue LoadError
-    puts "Please configure config/setup#{suffix}.rb"
+    puts "Please configure config/setup.rb"
     exit 1
   end
 end
