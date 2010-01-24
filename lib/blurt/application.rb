@@ -64,9 +64,13 @@ module Blurt
 
     post '/admin' do
       content_type 'text/xml'
-
+# raise request.body.read
       handler = Blurt::RequestHandler.new(request.body.read)
-      handler.response
+      begin
+        handler.response
+      rescue Blurt::Service::AuthenticationError
+        status 403
+      end
     end
 
     get '/:slug' do
