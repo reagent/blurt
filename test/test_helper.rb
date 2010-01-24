@@ -14,7 +14,7 @@ require 'mocha'
 require 'factory_girl'
 require 'test/factories'
 
-require 'config/setup'
+require 'config/boot'
 
 require 'shoulda/rails'
 

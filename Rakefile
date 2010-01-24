@@ -10,13 +10,8 @@ end
 def load_environment(environment)
   ENV['RACK_ENV'] = environment
   
-  begin
-    require File.join(File.dirname(__FILE__), 'config', 'setup')
-    ActiveRecord::Base.logger = Logger.new(STDOUT)
-  rescue LoadError
-    puts "Please configure config/setup.rb"
-    exit 1
-  end
+  require File.join(File.dirname(__FILE__), 'config', 'boot')
+  ActiveRecord::Base.logger = Logger.new(STDOUT)
 end
 
 namespace :db do

@@ -1,6 +1,3 @@
-require File.dirname(__FILE__) + '/../vendor/gems/environment'
-Bundler.require_env
-
 require 'xmlrpc/marshal'
 
 require 'lib/core_ext'

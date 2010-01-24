@@ -3,7 +3,7 @@ ENV['RACK_ENV'] = 'test'
 require 'rubygems'
 $:.unshift '../..'
 
-require 'lib/blurt/application'
+require 'config/boot'
 require 'test/unit/assertions'
 
 require 'cucumber'

@@ -1,2 +1,3 @@
-require 'lib/blurt/application'
+require 'config/boot'
+
 run Blurt::Application

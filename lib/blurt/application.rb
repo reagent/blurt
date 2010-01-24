@@ -1,10 +1,3 @@
-begin
-  require 'config/setup.rb'
-rescue LoadError
-  puts "Please create the file config/setup.rb (see the example file)"
-  exit 1
-end
-
 module Blurt
   class Application < Sinatra::Base
 
