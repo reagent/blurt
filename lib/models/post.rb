@@ -13,9 +13,6 @@ class Post < ActiveRecord::Base
   named_scope :by_date, :order => 'created_at DESC', :include => :tags
   named_scope :with_limit, lambda {|limit| {:limit => limit} }
   
-  # TODO: should be writer
-  attr_accessor :tag_names
-  
   before_validation :generate_slug
   after_save :save_tags
 
@@ -31,12 +28,13 @@ class Post < ActiveRecord::Base
     page_number = 1 if page_number.blank?
     PaginatedPost.new(:page => page_number)
   end
+
+  def tag_names=(tag_names)
+    @tag_names = (tag_names || []).uniq
+  end
   
-  # TODO: don't cache this data?
   def tag_names
     @tag_names ||= self.tags.map(&:name)
-    @tag_names.uniq!
-    @tag_names
   end
 
   def content
@@ -68,6 +66,11 @@ class Post < ActiveRecord::Base
       :description => body,
       :dateCreated => created_at
     }
+  end
+  
+  def reload(options = {})
+    @tag_names = nil
+    super(options)
   end
   
   private

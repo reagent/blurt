@@ -79,12 +79,16 @@ class PostTest < ActiveSupport::TestCase
     end
     
     should "have a list of assigned tag names" do
-      tag_names = ['tag']
-      @post.tag_names = tag_names
-      assert_equal tag_names, @post.tag_names
+      @post.tag_names = ['tag']
+      assert_equal ['tag'], @post.tag_names
     end
     
     should "default the list of tag names to an empty array" do
+      assert_equal [], @post.tag_names
+    end
+    
+    should "clear the tag list when setting the tag names to nil" do
+      @post.tag_names = nil
       assert_equal [], @post.tag_names
     end
 
@@ -98,6 +102,15 @@ class PostTest < ActiveSupport::TestCase
       @post.tags << tag
       
       assert_equal [tag.name], @post.tag_names
+    end
+    
+    should "pull its tag names from the database when reloaded" do
+      @post = Factory(:post, :tag_names => ['a'])
+      @post.tag_names = ['b', 'c']
+      
+      @post.reload
+      
+      assert_equal ['a'], @post.tag_names
     end
     
     should "generate a slug before the post is validated" do
