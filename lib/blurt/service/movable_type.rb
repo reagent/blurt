@@ -31,6 +31,14 @@ module Blurt
         Post.by_date.with_limit(limit).map {|p| to_struct(p) }
       end
       
+      def getTrackbackPings(post_id)
+        []
+      end
+      
+      def supportedTextFilters
+        [{:key => 'markdown', :label => 'Markdown'}]
+      end
+      
       private
       def tag_struct(tag)
         {

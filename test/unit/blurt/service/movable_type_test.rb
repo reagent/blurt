@@ -93,17 +93,21 @@ module Blurt::Service
         assert_equal ['struct_1'], service.getRecentPostTitles('0', 1)
       end
       
-      should "be able to get a list of trackbacks for a post"
-      should "be able to retrieve a list of supported services"
-      
-      should_eventually "be able to retrieve a list of supported filters" do
-        # need to disable authentication for this one
+      should "be able to get a list of trackbacks for a post" do
+        post = Factory(:post)
+        
+        service = MovableType.new('getTrackbackPings')
+        assert_equal [], service.getTrackbackPings(post.id.to_s)
       end
       
+      should "be able to retrieve a list of supported filters" do
+        service = MovableType.new('supportedTextFilters')
+        assert_equal [{:key => 'markdown', :label => 'Markdown'}], service.supportedTextFilters
+      end
       
+      should "be able to retrieve a list of supported services"
       
     end
-    
     
   end
 end
