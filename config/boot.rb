@@ -1,8 +1,10 @@
 require File.dirname(__FILE__) + '/../vendor/gems/environment'
 Bundler.require_env ENV['RACK_ENV']
 
+$:.unshift File.expand_path(File.dirname(__FILE__) + '/../lib')
+
 require 'sinatra/base'
-require 'lib/blurt'
+require 'blurt'
 
 begin
   require 'config/setup'

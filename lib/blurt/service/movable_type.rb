@@ -3,7 +3,7 @@ module Blurt
     
     class MovableType
 
-      include Service
+      include Interface
       
       def getCategoryList(blog_id)
         Tag.by_name.map {|t| to_struct(t) }

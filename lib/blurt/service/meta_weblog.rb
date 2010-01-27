@@ -3,7 +3,7 @@ module Blurt
     
     class MetaWeblog
       
-      include Service
+      include Interface
       
       def newPost(blog_id, struct, publish_flag)
         post = Post.create!(

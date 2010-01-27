@@ -1,17 +1,17 @@
 require 'xmlrpc/marshal'
 
-require 'lib/core_ext'
-require 'lib/title'
-require 'lib/sluggable'
+require 'core_ext'
+require 'title'
+require 'sluggable'
+         
+require 'blurt/formatter'
+require 'blurt/request_handler'
+require 'blurt/service'
+require 'blurt/configuration'
+require 'blurt/theme'
+require 'blurt/helpers'
 
-require 'lib/blurt/formatter'
-require 'lib/blurt/request_handler'
-require 'lib/blurt/service'
-require 'lib/blurt/configuration'
-require 'lib/blurt/theme'
-require 'lib/blurt/helpers'
-
-require 'lib/models'
+require 'models'
 
 module Blurt
   
