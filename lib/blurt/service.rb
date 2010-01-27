@@ -1,5 +1,8 @@
+require 'lib/blurt/service/meta_weblog'
+require 'lib/blurt/service/movable_type'
+
 module Blurt
-  class Service
+  module Service
 
     class AuthenticationError < StandardError; end
     
@@ -14,43 +17,6 @@ module Blurt
       @parameters.slice!(1, 2)
     end
     
-    def newPost(blog_id, struct, publish_flag)
-      post = Post.create!(
-        :title     => struct['title'],
-        :body      => struct['description'],
-        :tag_names => struct['categories']
-      )
-      post.id.to_s
-    end
-    
-    def getPost(id)
-      Post.find(id).to_struct
-    end
-    
-    def editPost(id, struct, publish_flag)
-      post = Post.find(id)
-      post.update_attributes(
-        :title     => struct['title'],
-        :body      => struct['description'],
-        :tag_names => struct['categories']
-      )
-    end
-    
-    def getRecentPosts(blog_id, limit)
-      Post.by_date.with_limit(limit).map {|p| p.to_struct }
-    end
-    
-    def getCategories(blog_id)
-      Tag.by_name.map {|t| t.to_struct }
-    end
-    
-    def newMediaObject(blog_id, struct)
-      media = Media.new(struct)
-      media.save!
-      
-      media.to_struct
-    end
-    
     def authenticate(username, password)
       unless username == Blurt.configuration.username && password == Blurt.configuration.password
         raise AuthenticationError, "User #{username} failed to authenticate"
@@ -61,6 +27,13 @@ module Blurt
       username, password = extract_credentials
       authenticate(username, password)
       send(@method_name, *parameters)
+    end
+    
+    def to_struct(thing)
+      case thing
+      when Post then post_struct(thing)
+      when Tag  then tag_struct(thing)
+      end
     end
     
   end

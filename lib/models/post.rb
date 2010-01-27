@@ -57,22 +57,11 @@ class Post < ActiveRecord::Base
     xml.target!
   end
   
-  def to_struct
-    {
-      :postid      => id.to_s,
-      :title       => title,
-      :categories  => tag_names,
-      :permaLink   => permalink,
-      :description => body,
-      :dateCreated => created_at
-    }
-  end
-  
   def reload(options = {})
     @tag_names = nil
     super(options)
   end
-  
+
   private
   def save_tags
     self.tags = self.tag_names.map {|tag_name| Tag.find_or_create_by_name(tag_name) }

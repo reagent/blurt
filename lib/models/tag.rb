@@ -18,14 +18,5 @@ class Tag < ActiveRecord::Base
   def permalink
     tag_url(self)
   end
-  
-  def to_struct
-    {
-      :description => name,
-      :htmlUrl     => '',
-      :rssUrl      => ''
-    }
-  end
 
-  
 end

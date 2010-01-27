@@ -21,18 +21,6 @@ class TagTest < ActiveSupport::TestCase
       assert_equal 'permalink', tag.permalink
     end
     
-    should "be able to generate a struct representation of itself" do
-      tag = Tag.new(:name => 'Tag')
-      
-      expected = {
-        :description  => 'Tag',
-        :htmlUrl      => '',
-        :rssUrl       => ''
-      }
-          
-      assert_equal expected, tag.to_struct
-    end
-    
   end
   
 end

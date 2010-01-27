@@ -123,25 +123,6 @@ class PostTest < ActiveSupport::TestCase
       assert_equal 'permalink', @post.permalink
     end
     
-    should "be able to generate a struct representation of itself" do
-      post = Factory.build(:post, :title => 'Post', :body => 'body')
-      post.tags.build(:name => 'Tag')
-
-      post.save
-      post.stubs(:permalink).with().returns('permalink')
-
-      expected = {
-        :postid      => post.id.to_s,
-        :title       => 'Post',
-        :categories  => ['Tag'],
-        :permaLink   => 'permalink',
-        :description => 'body',
-        :dateCreated => post.created_at
-      }
-      
-      assert_equal expected, post.to_struct
-    end
-    
     context "with a list of assigned tag names" do
       
       should "be able to create the associated tags" do
