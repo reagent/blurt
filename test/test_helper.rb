@@ -19,6 +19,8 @@ require 'config/boot'
 require 'shoulda/rails'
 
 class ActiveSupport::TestCase
+  
+  Mocha::Configuration.warn_when(:stubbing_non_existent_method)
 
   setup :begin_transaction
   teardown :rollback_transaction

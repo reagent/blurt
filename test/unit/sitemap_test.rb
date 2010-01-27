@@ -161,11 +161,11 @@ class SitemapTest < ActiveSupport::TestCase
   context "An instance of the Sitemap::Page class" do
     should "determine the location and modified_at from a page number and post data" do
       ::Post.expects(:maximum).with(:updated_at).returns(Time.parse('2009-08-01 00:00:00'))
-      Sitemap::Page.any_instance.expects(:posts_url).with(1).returns('posts_url')
+      Sitemap::Page.any_instance.expects(:page_url).with(1).returns('page_url')
       
       page = Sitemap::Page.new(1)
       
-      assert_equal 'posts_url', page.location
+      assert_equal 'page_url', page.location
       assert_equal '2009-08-01', page.modified_on
     end
   end

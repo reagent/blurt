@@ -106,8 +106,10 @@ class Sitemap
   #
   class Page < Element
    
+    include Blurt::Helpers::UrlHelper
+   
     def initialize(page_number)
-      super :location => posts_url(page_number),
+      super :location => page_url(page_number),
             :modified_at => ::Post.maximum(:updated_at)
     end
     

@@ -2,6 +2,12 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class SluggableImplementation
   include Sluggable
+  
+  def self.find_by_slug; end
+
+  def slug_column; end
+  def title; end
+  def slug=(slug); end
 end
 
 class SluggableImplementationTest < ActiveSupport::TestCase
