@@ -44,7 +44,7 @@ Feature: Viewing the front-end
     When I visit "/feed"
     Then I should see an empty RSS feed
     And the content-type of the page should be "application/xml"
-    
+  
   Scenario: Viewing the second page
     Given a post exists with the title "First post"
     And 1 full page of posts exists

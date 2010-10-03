@@ -10,7 +10,7 @@ Given /^I have the correct credentials$/ do
   @password = Blurt.configuration.password
 end
 
-Given /^(?:a post exists|I create (?:a post|posts)) with the following data:$/ do |table|
+Given /^(?:(?:a )?posts? exists?|I create (?:a post|posts)) with the following data:$/ do |table|
   table.hashes.each do |attributes|
     post_data             = attributes.symbolize_keys
     post_data[:tag_names] = post_data[:tag_names].split(/\s*,\s*/)
@@ -97,6 +97,7 @@ Then /^I should receive the correct response for the "getPost" call$/ do
   assert_post_without_date most_recent_post, api_response
 end
 
+# TODO: assert full struct somehow
 Then /^I should receive the posts:\s*(.+)$/ do |post_titles|
   titles = post_titles.split(/\s*,\s*/)
   assert_equal titles, api_response.map {|r| r['title']}
@@ -116,11 +117,14 @@ Then /^the (?:updated|new) post should have the attributes:$/ do |table|
   assert_equal attributes[:tags].split(', '), post.tag_names
 end
 
+# TODO: Make this a separate step to handle metaWeblog vs. MovableType?
+# TODO: assert full struct somehow
 Then /^I should receive the categories:\s*(.+)$/ do |tag_names|
   names = tag_names.split(/\s*,\s*/)
-  assert_equal names, api_response.map {|r| r['description']}
+  assert_equal names, api_response.map {|r| r['description'] || r['categoryName'] }
 end
 
+# TODO: assert full struct somehow
 Then /^I should receive the proper response for the "newMediaObject" call$/ do
   media = Media.new('name' => 'image.png')
   assert_equal media.url, api_response['url']

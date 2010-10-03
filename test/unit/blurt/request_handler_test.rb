@@ -9,6 +9,7 @@ module Blurt
     end
 
     context "An instance of the RequestHandler class" do
+      subject { @subject ||= RequestHandler.new(stub()) }
       
       should "be able to convert an RPC call to a struct" do
 
@@ -33,39 +34,9 @@ module Blurt
         assert_equal expected, handler.to_struct
       end
       
-      should "know the service name" do
-        handler = RequestHandler.new('')
-        handler.stubs(:to_struct).with().returns(['metaWeblog.newPost', []])
-        
-        assert_equal 'metaWeblog', handler.service_name
-      end
-      
-      should "know the name of the service class when handling a metaWeblog request" do
-        handler = RequestHandler.new('')
-        handler.stubs(:service_name).with().returns('metaWeblog')
-        
-        assert_equal Blurt::Service::MetaWeblog, handler.service_class
-      end
-      
-      should "know the name of the service class when handling a movable type request" do
-        handler = RequestHandler.new('')
-        handler.stubs(:service_name).with().returns('mt')
-        
-        assert_equal Blurt::Service::MovableType, handler.service_class
-      end
-      
-      should "know the method being called when handling a Meta Weblog request" do
-        handler = RequestHandler.new('')
-        handler.stubs(:to_struct).with().returns(['metaWeblog.newPost', []])
-        
-        assert_equal 'newPost', handler.method_name
-      end
-      
-      should "know the method being called when handling a Movable Type request" do
-        handler = RequestHandler.new('')
-        handler.stubs(:to_struct).with().returns(['mt.getPostCategories', []])
-        
-        assert_equal 'getPostCategories', handler.method_name
+      should "know the method being called" do
+        subject.stubs(:to_struct).with().returns(['metaWeblog.newPost', []])
+        assert_equal 'metaWeblog.newPost', subject.method_name
       end
       
       should "know the parameters for the method being called" do
@@ -87,19 +58,16 @@ module Blurt
       end
       
       should "be able to return the appropriate response" do
-        handler = RequestHandler.new(load_service_fixture('newPost'))
-        handler.stubs(:method_name).with().returns('newPost')
-        handler.stubs(:parameters).with().returns(['one', 'two'])
-        handler.stubs(:service_class).with().returns(Blurt::Service::MetaWeblog)
+        subject.stubs(:method_name).with().returns('metaWeblog.newPost')
+        subject.stubs(:parameters).with().returns(['one', 'two'])
         
-        service_mock = mock() {|s| s.expects(:call).with().returns('service_response') }
-        Blurt::Service::MetaWeblog.expects(:new).with('newPost', 'one', 'two').returns(service_mock)
-        
+        Blurt::Service.expects(:call).with('metaWeblog.newPost', 'one', 'two').returns('service_response')
+
         XMLRPC::Marshal.expects(:dump_response).with('service_response').returns('response')
         
-        assert_equal 'response', handler.response
+        assert_equal 'response', subject.response        
       end
-      
+    
     end
 
   end
